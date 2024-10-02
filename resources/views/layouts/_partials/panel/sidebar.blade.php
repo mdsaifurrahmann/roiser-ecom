@@ -2,7 +2,7 @@
     <aside class="sidebar-wrapper" data-simplebar="true">
         <div class="sidebar-header">
             <div>
-                <img src="assets/images/logo-icon-2.png" class="logo-icon" alt="logo icon">
+                <img src="{{asset("assets/images/logo-icon-2.png")}}" class="logo-icon" alt="logo icon">
             </div>
             <div>
                 <h4 class="logo-text">Fobia</h4>
@@ -10,8 +10,8 @@
         </div>
         <!--navigation-->
         <ul class="metismenu" id="menu">
-            <li>
-                <a href="index.html">
+            <li class="{{ Route::current()->getName() == 'dashboard' ? 'mm-active' : ''}}">
+                <a href="{{ Route::current()->getName() == 'dashboard' ? 'javascript:void(0)' : route('dashboard') }}">
                     <div class="parent-icon">
                         <ion-icon name="home-outline"></ion-icon>
                     </div>

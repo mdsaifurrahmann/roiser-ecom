@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'sys_controller';
+
     /**
      * The attributes that are mass assignable.
      *
