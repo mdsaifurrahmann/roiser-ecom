@@ -28,7 +28,6 @@
 
 <body>
 
-
     <!--start wrapper-->
     <div class="wrapper">
 
@@ -38,8 +37,9 @@
     </div>
     <!--end wrapper-->
 
-
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
+    <script type="module" src="{{ Vite::asset('resources/assets/js/sentry.js') }}"></script>
 
 
 
