@@ -42,6 +42,7 @@ $(function () {
 			  ));
 	});
 
+
 	$(".btn-mobile-filter").on("click", function () {
 		$(".filter-sidebar").removeClass("d-none");
 	}),
@@ -192,4 +193,19 @@ $(function () {
 	$(function () {
 		$('[data-bs-toggle="tooltip"]').tooltip();
 	});
+	
+	let delForm = document.querySelectorAll(".delete-form");
+	
+	if(delForm){
+			delForm.forEach(function (form) {
+				form.addEventListener("submit", function (event) {
+					var confirmation = confirm(
+						"Are you sure you want to delete this item?",
+					);
+					if (!confirmation) {
+						event.preventDefault(); // Prevent the form submission
+					}
+				});
+			});
+		}
 });

@@ -17,5 +17,8 @@
             </ol>
         </nav>
     </div>
+
+    {{ $slot }}
+
 </div>
 <!--end breadcrumb-->

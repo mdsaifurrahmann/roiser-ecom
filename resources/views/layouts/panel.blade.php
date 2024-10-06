@@ -12,6 +12,8 @@
     <link href="assets/css/header-colors.css" rel="stylesheet" /> --}}
 
     <title>@yield('title')</title>
+
+    @yield('styles')
 </head>
 
 <body>
@@ -40,8 +42,13 @@
 
         @include('layouts._partials.panel.footer')
 
+        <!--start overlay-->
+        <div class="overlay nav-toggle-icon"></div>
+        <!--end overlay-->
+
     </div>
     <!--end wrapper-->
+
 
 
     @include('layouts._partials.panel.scripts')

@@ -285,8 +285,8 @@ body.lobibox-open {
 .lobibox {
 	position: fixed;
 	z-index: 4001;
-	-webkit-box-shadow: 0 0 20px 5px rgba(0, 0, 0, .5);
-	box-shadow: 0 0 20px 5px rgba(0, 0, 0, .5)
+	/*-webkit-box-shadow: 0 0 20px 5px rgba(0, 0, 0, .5);*/
+	/*box-shadow: 0 0 20px 5px rgba(0, 0, 0, .5)*/
 }
 
 .lobibox * {
@@ -875,8 +875,8 @@ body.lobibox-open {
 	margin: 7px 0;
 	border-radius: 0;
 	border: 1px solid transparent;
-	-webkit-box-shadow: 2px 2px 5px #aaa;
-	box-shadow: 2px 2px 5px #aaa;
+	/*-webkit-box-shadow: 2px 2px 5px #aaa;*/
+	/*box-shadow: 2px 2px 5px #aaa;*/
 	-webkit-transition: all .2s;
 	-o-transition: all .2s;
 	transition: all .2s
@@ -1024,8 +1024,8 @@ body.lobibox-open {
 
 .lobibox-notify:hover {
 	cursor: pointer;
-	-webkit-box-shadow: 3px 3px 10px #aaa;
-	box-shadow: 3px 3px 10px #aaa
+	/*-webkit-box-shadow: 3px 3px 10px #aaa;*/
+	/*box-shadow: 3px 3px 10px #aaa*/
 }
 
 .lobibox-notify.notify-mini {

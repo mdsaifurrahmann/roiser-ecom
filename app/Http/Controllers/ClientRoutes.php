@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class ClientRoutes extends Controller
 {
+
     public function home()
     {
         return view('client.home');
