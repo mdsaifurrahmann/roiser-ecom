@@ -29,6 +29,8 @@ Route::prefix('panel')->middleware('auth')->group(function () {
 
     // users & customers
     Route::get('users', [UsersController::class, 'index'])->name('users.index');
+    Route::post('users/store', [UsersController::class, 'store'])->name('users.store');
+    Route::delete('users/delete', [UsersController::class, 'destroy'])->name('users.delete');
 
     // group post
     Route::post('group/store', [RolesController::class, 'groupStore'])->name('group.store');

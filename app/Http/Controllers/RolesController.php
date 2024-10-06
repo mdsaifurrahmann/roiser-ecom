@@ -287,7 +287,7 @@ class RolesController extends Controller
     {
         $permissions = PermissionModel::join('groups', 'groups.id', '=', 'permissions.group_id')
                 ->select('permissions.id', 'permissions.name', 'permissions.label', 'permissions.group_id', 'groups.name as group_name')
-                ->paginate(16)->fragment(hash('crc32', 'permissions'));
+                ->paginate(12)->fragment(hash('crc32', 'permissions'));
 
         $groups = Groups::all();
 
