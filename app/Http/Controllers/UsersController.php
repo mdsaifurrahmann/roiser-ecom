@@ -14,8 +14,8 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(16)->fragment(hash('crc32', 'users'));
-
+        $users = User::with('roles')->paginate(16)->fragment(hash('crc32', 'users'));
+        
         $roles = Role::all();
 
         return view('panel.users.index', [
@@ -62,6 +62,12 @@ class UsersController extends Controller
             // assign role to user
             $user->assignRole($request->role);
 
+            // send email notification to user with deferred job
+            defer(function () use ($user) {
+                $user->sendEmailVerificationNotification();
+            });
+
+
             return back()->with('success', 'User created successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
@@ -83,7 +89,7 @@ class UsersController extends Controller
 
             // delete user
             $user->delete();
-            
+
             return back()->with('success', 'User deleted successfully');
         } else {
             return back()->with('error', 'User not found');

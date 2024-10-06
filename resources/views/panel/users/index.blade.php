@@ -72,6 +72,7 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone ? $user->phone : 'N/A' }}</td>
                         <td>{{ $user->getRoleNames()->first() ? $user->getRoleNames()->first() : 'N/A' }}</td>
+                        {{-- <td>{{ $user->roles()->first()->name ? $user->roles()->first()->name : 'N/A' }}</td> --}}
                         <td>{{ $user->status == 1 ? 'Active' : 'Suspended' }}</td>
                         <td>
                             <div class="table-actions d-flex align-items-center gap-3 fs-6">
