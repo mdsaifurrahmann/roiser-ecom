@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientRoutes;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UsersController;
+
 
 Route::controller(ClientRoutes::class)->group(function () {
     Route::get('/', 'home')->name('home');
@@ -24,6 +26,9 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::get('roles', [RolesController::class, 'rolesIndex'])->name('roles.index');
     Route::get('groups', [RolesController::class, 'groupsIndex'])->name('groups.index');
     Route::get('permissions', [RolesController::class, 'permissionsIndex'])->name('permissions.index');
+
+    // users & customers
+    Route::get('users', [UsersController::class, 'index'])->name('users.index');
 
     // group post
     Route::post('group/store', [RolesController::class, 'groupStore'])->name('group.store');

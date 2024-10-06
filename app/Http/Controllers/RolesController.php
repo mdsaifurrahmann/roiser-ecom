@@ -93,14 +93,10 @@ class RolesController extends Controller
         //     return $response;
         // }
 
-        $groups = Cache::flexible('groups', [432000, 604800], function () {
-            return Groups::all();
-        });
+        $groups = Groups::all();
 
         // get permissions associated with the role
-        $permissions = Cache::flexible('permissions', [432000, 604800], function () {
-            return PermissionModel::all();
-        });
+        $permissions = PermissionModel::all();
 
         $role = Role::where('name', $name)->first();
 
@@ -289,15 +285,11 @@ class RolesController extends Controller
 
     public function permissionsIndex()
     {
-        $permissions = Cache::flexible('permissions', [432000, 604800], function () {
-            return PermissionModel::join('groups', 'groups.id', '=', 'permissions.group_id')
+        $permissions = PermissionModel::join('groups', 'groups.id', '=', 'permissions.group_id')
                 ->select('permissions.id', 'permissions.name', 'permissions.label', 'permissions.group_id', 'groups.name as group_name')
-                ->get();
-        });
+                ->paginate(16)->fragment(hash('crc32', 'permissions'));
 
-        $groups = Cache::flexible('groups', [432000, 604800], function () {
-            return Groups::all();
-        });
+        $groups = Groups::all();
 
         $labels = RolePermissionLabels::cases();
 

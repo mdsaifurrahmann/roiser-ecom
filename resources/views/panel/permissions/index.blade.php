@@ -102,6 +102,8 @@
 
             </tbody>
         </table>
+
+        {{ $permissions->links('vendor.pagination.bootstrap-5') }}
     </div>
 
 

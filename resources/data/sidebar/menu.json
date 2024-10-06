@@ -6,10 +6,22 @@
 		"slug": "dashboard"
 	},
 	{
-		"name": "Users",
+		"name": "Users & Customers",
 		"icon": "people-outline",
 		"url": "",
-		"slug": "users"
+		"slug": "users",
+		"submenu": [
+			{
+				"name": "Users",
+				"url": "users",
+				"slug": "users.index"
+			},
+			{
+				"name": "Customers",
+				"url": "customers",
+				"slug": "customers.index"
+			}
+		]
 	},
 	{
 		"name": "Role & Permissions",
