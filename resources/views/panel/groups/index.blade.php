@@ -41,69 +41,76 @@
         {{-- @endcan --}}
     </x-panel.breadcrumb>
 
-    <div class="d-flex align-items-center">
-        <h5 class="mb-0">List of Groups</h5>
-        <form class="ms-auto position-relative">
-            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
-                <ion-icon name="search-sharp"></ion-icon>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0">List of Groups</h5>
+                <form class="ms-auto position-relative">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                        <ion-icon name="search-sharp"></ion-icon>
+                    </div>
+                    <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
+                        onkeyup="searchGroups()">
+                </form>
             </div>
-            <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput" onkeyup="searchGroups()">
-        </form>
-    </div>
-    <div class="table-responsive mt-4">
-        <table class="table align-middle">
-            <thead class="table-secondary">
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="groupTableBody">
+            <div class="table-responsive mt-4">
+                <table class="table align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="groupTableBody">
 
-                @foreach ($groups as $key => $group)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $group->name }}
-                        </td>
-                        <td>
-                            <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                @can('update_group')
-                                    <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
-                                        data-bs-placement="bottom" title="" data-bs-original-title="Edit"
-                                        aria-label="Edit" data-bs-target="#editModal" onclick="edit({{ $group->id }})">
-                                        <ion-icon name="create-outline"></ion-icon>
-                                    </a>
-                                @endcan
-                                {{-- @can('delete_group') --}}
-                                    <form method="POST" action="{{ route('group.delete') }}" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="hidden" name="id" id="groupDelete" value="{{ $group->id }}">
+                        @foreach ($groups as $key => $group)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $group->name }}
+                                </td>
+                                <td>
+                                    <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                        @can('update_group')
+                                            <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
+                                                data-bs-placement="bottom" title="" data-bs-original-title="Edit"
+                                                aria-label="Edit" data-bs-target="#editModal"
+                                                onclick="edit({{ $group->id }})">
+                                                <ion-icon name="create-outline"></ion-icon>
+                                            </a>
+                                        @endcan
+                                        {{-- @can('delete_group') --}}
+                                        <form method="POST" action="{{ route('group.delete') }}" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id" id="groupDelete"
+                                                value="{{ $group->id }}">
 
-                                        <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
-                                                name="trash-outline"></ion-icon></button>
-                                    </form>
-                                {{-- @endcan --}}
+                                            <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
+                                                    name="trash-outline"></ion-icon></button>
+                                        </form>
+                                        {{-- @endcan --}}
 
-                                {{-- @cannot('update_group' || 'delete_group')
+                                        {{-- @cannot('update_group' || 'delete_group')
                                     Actions unavailable
                                 @endcannot --}}
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
 
-                {{-- @if ($groups->count() == 0)
+                        {{-- @if ($groups->count() == 0)
                     <tr>
                         <td colspan="3" class="text-center">No groups found</td>
                     </tr>
                 @endif --}}
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
 
 
 

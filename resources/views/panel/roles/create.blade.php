@@ -39,73 +39,80 @@
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
+    <div class="card">
+        <div class="card-body">
 
-    <form action="{{ route('role.store') }}" method="POST">
-        @csrf
 
-        <div class="col-12 mb-4">
-            <label class="form-label" for="modalRoleName">Role Name</label>
-            <input type="text" id="modalRoleName" class="form-control" name="roleName" placeholder="Enter a role name"
-                value="{{ old('roleName') }}" required />
-        </div>
-        <div class="table-responsive">
-            <table class="table table-flush-spacing">
-                <thead class="table-secondary">
-                    <tr>
-                        <th>Name</th>
-                        <th>Permissions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($groups as $group)
-                        <tr>
-                            <td class="text-nowrap fw-medium">{{ $group->name }}</td>
-                            <td>
-                                <div class="d-flex">
+            <form action="{{ route('role.store') }}" method="POST">
+                @csrf
 
-                                    @php
-                                        // Filter permissions for the group
-                                        $groupPermissions = $permissions->filter(function ($permission) use ($group) {
-                                            return $permission->group_id === $group->id;
-                                        });
-                                    @endphp
+                <div class="col-12 mb-4">
+                    <label class="form-label" for="modalRoleName">Role Name</label>
+                    <input type="text" id="modalRoleName" class="form-control" name="roleName"
+                        placeholder="Enter a role name" value="{{ old('roleName') }}" required />
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-flush-spacing">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>Name</th>
+                                <th>Permissions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($groups as $group)
+                                <tr>
+                                    <td class="text-nowrap fw-medium">{{ $group->name }}</td>
+                                    <td>
+                                        <div class="d-flex">
 
-                                    @if ($groupPermissions->isEmpty())
-                                        No permissions available for this group.
-                                    @else
-                                        @foreach ($permissions as $permission)
-                                            @if ($group->id === $permission->group_id)
-                                                <div class="form-check me-4 w-20">
-                                                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                                                        id="userManagement{{ $permission->name }}"
-                                                        value="{{ $permission->name }}" />
-                                                    <label class="form-check-label"
-                                                        for="userManagement{{ $permission->name }}">
-                                                        {{ $permission->label ? $permission->label : $permission->name }}
-                                                    </label>
-                                                </div>
+                                            @php
+                                                // Filter permissions for the group
+                                                $groupPermissions = $permissions->filter(function ($permission) use (
+                                                    $group,
+                                                ) {
+                                                    return $permission->group_id === $group->id;
+                                                });
+                                            @endphp
+
+                                            @if ($groupPermissions->isEmpty())
+                                                No permissions available for this group.
+                                            @else
+                                                @foreach ($permissions as $permission)
+                                                    @if ($group->id === $permission->group_id)
+                                                        <div class="form-check me-4 w-20">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="permissions[]"
+                                                                id="userManagement{{ $permission->name }}"
+                                                                value="{{ $permission->name }}" />
+                                                            <label class="form-check-label"
+                                                                for="userManagement{{ $permission->name }}">
+                                                                {{ $permission->label ? $permission->label : $permission->name }}
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
                                             @endif
-                                        @endforeach
-                                    @endif
 
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-            <div class="col-12 text-center mt-4">
-                <button type="reset" class="btn btn-outline-dark me-1 bread-btn" data-bs-dismiss="modal"
-                    aria-label="Close">
-                    Back to Roles
-                </button>
-                <button type="submit" id="create" class="btn btn-primary me-sm-3">Create Role</button>
-            </div>
+                    <div class="col-12 text-center mt-4">
+                        <button type="reset" class="btn btn-outline-dark me-1 bread-btn" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            Back to Roles
+                        </button>
+                        <button type="submit" id="create" class="btn btn-primary me-sm-3">Create Role</button>
+                    </div>
 
-    </form>
+            </form>
 
-
+        </div>
+    </div>
 @stop
 
 

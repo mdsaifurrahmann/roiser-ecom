@@ -39,81 +39,86 @@
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
-    <div class="d-flex align-items-center">
-        <h5 class="mb-0">List of Users</h5>
-        <form class="ms-auto position-relative">
-            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
-                <ion-icon name="search-sharp"></ion-icon>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0">List of Users</h5>
+                <form class="ms-auto position-relative">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                        <ion-icon name="search-sharp"></ion-icon>
+                    </div>
+                    <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
+                        onkeyup="searchPermissions()">
+                </form>
             </div>
-            <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
-                onkeyup="searchPermissions()">
-        </form>
-    </div>
 
-    <div class="table-responsive mt-4">
-        <table class="table align-middle">
-            <thead class="table-secondary">
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="usersTableBody">
+            <div class="table-responsive mt-4">
+                <table class="table align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
 
-                @foreach ($users as $key => $user)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone ? $user->phone : 'N/A' }}</td>
-                        <td>{{ $user->getRoleNames()->first() ? $user->getRoleNames()->first() : 'N/A' }}</td>
-                        {{-- <td>{{ $user->roles()->first()->name ? $user->roles()->first()->name : 'N/A' }}</td> --}}
-                        <td>{{ $user->status == 1 ? 'Active' : 'Suspended' }}</td>
-                        <td>
-                            <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                {{-- @can('update_permission') --}}
-                                <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
-                                    data-bs-placement="bottom" title="" data-bs-original-title="Edit"
-                                    aria-label="Edit" data-bs-target="#editModal" onclick="edit({{ $user->id }})">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </a>
-                                {{-- @endcan --}}
+                        @foreach ($users as $key => $user)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->phone ? $user->phone : 'N/A' }}</td>
+                                <td>{{ $user->getRoleNames()->first() ? $user->getRoleNames()->first() : 'N/A' }}</td>
+                                {{-- <td>{{ $user->roles()->first()->name ? $user->roles()->first()->name : 'N/A' }}</td> --}}
+                                <td>{{ $user->status == 1 ? 'Active' : 'Suspended' }}</td>
+                                <td>
+                                    <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                        {{-- @can('update_permission') --}}
+                                        <a href="{{ route('users.edit', $user->email) }}" class="text-warning" data-bs-toggle="tooltip"
+                                            data-bs-placement="bottom" title="Edit" data-bs-original-title="Edit"
+                                            aria-label="Edit">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </a>
+                                        {{-- @endcan --}}
 
-                                {{-- @can('delete_permission') --}}
-                                <form method="POST" action="{{ route('users.delete') }}" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="id" value="{{ $user->id }}">
+                                        {{-- @can('delete_permission') --}}
+                                        <form method="POST" action="{{ route('users.delete') }}" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id" value="{{ $user->id }}">
 
-                                    <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
-                                            name="trash-outline"></ion-icon></button>
-                                </form>
-                                {{-- @endcan --}}
+                                            <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
+                                                    name="trash-outline"></ion-icon></button>
+                                        </form>
+                                        {{-- @endcan --}}
 
-                                {{-- @cannot('update_permission' || 'delete_permission')
+                                        {{-- @cannot('update_permission' || 'delete_permission')
                                Actions unavailable
                             @endcannot --}}
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
 
-                @if ($users->count() == 0)
-                    <tr>
-                        <td colspan="4" class="text-center">No Users found</td>
+                        @if ($users->count() == 0)
+                            <tr>
+                                <td colspan="4" class="text-center">No Users found</td>
 
-                    </tr>
-                @endif
+                            </tr>
+                        @endif
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
 
-        {{ $users->links('vendor.pagination.bootstrap-5') }}
+                {{ $users->links('vendor.pagination.bootstrap-5') }}
+            </div>
+        </div>
     </div>
 
 

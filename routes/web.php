@@ -31,6 +31,8 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::get('users', [UsersController::class, 'index'])->name('users.index');
     Route::post('users/store', [UsersController::class, 'store'])->name('users.store');
     Route::delete('users/delete', [UsersController::class, 'destroy'])->name('users.delete');
+    Route::get('users/edit/{email}', [UsersController::class, 'edit'])->name('users.edit');
+    Route::patch('users/update', [UsersController::class, 'update'])->name('users.update');
 
     // group post
     Route::post('group/store', [RolesController::class, 'groupStore'])->name('group.store');

@@ -5,7 +5,6 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/notifications/css/lobibox.min.css') }}" />
     <style>
-
         html.dark-theme .table thead tr th {
             color: var(--bs-table-bg) !important;
             background-color: inherit !important;
@@ -16,20 +15,19 @@
         /*    background-color: inherit !important;*/
         /*}*/
 
-        @media (prefers-color-scheme: dark){
+        @media (prefers-color-scheme: dark) {
             .table thead tr th {
                 color: var(--bs-table-bg) !important;
                 background-color: inherit !important;
             }
         }
 
-        @media (prefers-color-scheme: light){
+        @media (prefers-color-scheme: light) {
             .table thead tr th {
                 color: inherit;
                 background-color: inherit;
             }
         }
-
     </style>
 @stop
 
@@ -37,114 +35,129 @@
 @section('content')
 
     <x-panel.breadcrumb title="Permissions" page="Permissions">
-        <x-panel.breadcrumb-action title="Add Permission" icon="add-circle-outline" attr='data-bs-toggle="modal" data-bs-target="#addModal"'>
+        <x-panel.breadcrumb-action title="Add Permission" icon="add-circle-outline"
+            attr='data-bs-toggle="modal" data-bs-target="#addModal"'>
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
-    <div class="d-flex align-items-center">
-        <h5 class="mb-0">List of Permissions</h5>
-        <form class="ms-auto position-relative">
-            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
-                <ion-icon name="search-sharp"></ion-icon>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0">List of Permissions</h5>
+                <form class="ms-auto position-relative">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                        <ion-icon name="search-sharp"></ion-icon>
+                    </div>
+                    <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
+                        onkeyup="searchPermissions()">
+                </form>
             </div>
-            <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput" onkeyup="searchPermissions()">
-        </form>
-    </div>
-    <div class="table-responsive mt-4">
-        <table class="table align-middle">
-            <thead class="table-secondary">
-            <tr>
-                <th>#</th>
-                <th>Name (Label)</th>
-                <th>Group</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="groupTableBody">
-                
-            @foreach($permissions as $key => $permission)
-                <tr>
-                    <td>{{$key+1}}</td>
-                    <td>{{$permission->name}} ({{$permission->label}})</td>
-                    <td>{{$permission->group_name}}</td>
-                    <td>
-                        <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                            {{-- @can('update_permission') --}}
-                                <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal" data-bs-placement="bottom" title="" data-bs-original-title="Edit" aria-label="Edit" data-bs-target="#editModal" onclick="edit({{ $permission->id }})">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </a>
-                            {{-- @endcan --}}
+            <div class="table-responsive mt-4">
+                <table class="table align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th>Name (Label)</th>
+                            <th>Group</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="groupTableBody">
 
-                            {{-- @can('delete_permission') --}}
-                                <form method="POST" action="{{ route('permission.delete') }}" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="id" id="permissionDelete" value="{{ $permission->id }}">
+                        @foreach ($permissions as $key => $permission)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $permission->name }} ({{ $permission->label }})</td>
+                                <td>{{ $permission->group_name }}</td>
+                                <td>
+                                    <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                        {{-- @can('update_permission') --}}
+                                        <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
+                                            data-bs-placement="bottom" title="" data-bs-original-title="Edit"
+                                            aria-label="Edit" data-bs-target="#editModal"
+                                            onclick="edit({{ $permission->id }})">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </a>
+                                        {{-- @endcan --}}
 
-                                    <button  type="submit" class="text-danger bg-transparent border-0"><ion-icon name="trash-outline"></ion-icon></button>
-                                </form>
-                            {{-- @endcan --}}
+                                        {{-- @can('delete_permission') --}}
+                                        <form method="POST" action="{{ route('permission.delete') }}" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id" id="permissionDelete"
+                                                value="{{ $permission->id }}">
 
-                            {{-- @cannot('update_permission' || 'delete_permission')
+                                            <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
+                                                    name="trash-outline"></ion-icon></button>
+                                        </form>
+                                        {{-- @endcan --}}
+
+                                        {{-- @cannot('update_permission' || 'delete_permission')
                                Actions unavailable
                             @endcannot --}}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+
+                        @if ($permissions->count() == 0)
+                            <tr>
+                                <td colspan="4" class="text-center">No Permissions found</td>
+
+                            </tr>
+                        @endif
+
+                    </tbody>
+                </table>
+
+                {{ $permissions->links('vendor.pagination.bootstrap-5') }}
+            </div>
+
+
+
+
+            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Permission</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </td>
-                </tr>
-            @endforeach
+                        <div class="modal-body">
 
-            @if($permissions->count() == 0)
-                <tr>
-                    <td colspan="4" class="text-center">No Permissions found</td>
+                            <form action="{{ route('permission.store') }}" method="POST">
+                                @csrf
+                                <input class="form-control mb-3" name="name" type="text"
+                                    placeholder="Ex: view_products" aria-label="Group Example" required>
+                                <!-- <input class="form-control mb-3" name="label" type="text" placeholder="Ex: View" aria-label="Label Example" required> -->
+                                <select class="form-select mb-3" name="label" required>
+                                    <option selected disabled>Select Label</option>
+                                    @foreach ($labels as $label)
+                                        <option value="{{ $label }}">{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                                <select class="form-select mb-3" name="group_id" required>
+                                    <option selected disabled>Select Group</option>
+                                    @foreach ($groups as $group)
+                                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                    @endforeach
+                                </select>
 
-                </tr>
-            @endif
-
-            </tbody>
-        </table>
-
-        {{ $permissions->links('vendor.pagination.bootstrap-5') }}
-    </div>
+                                <div class="mt-3">
+                                    <button type="button" class="btn btn-secondary me-2"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
 
 
 
-
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Permission</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <form action="{{ route('permission.store') }}" method="POST">
-                        @csrf
-                        <input class="form-control mb-3" name="name" type="text" placeholder="Ex: view_products" aria-label="Group Example" required>
-                        <!-- <input class="form-control mb-3" name="label" type="text" placeholder="Ex: View" aria-label="Label Example" required> -->
-                        <select class="form-select mb-3" name="label" required>
-                            <option selected disabled>Select Label</option>
-                            @foreach($labels as $label)
-                                <option value="{{ $label }}">{{ $label }}</option>
-                            @endforeach
-                        </select>
-                        <select class="form-select mb-3" name="group_id" required>
-                            <option selected disabled>Select Group</option>
-                            @foreach($groups as $group)
-                                <option value="{{ $group->id }}">{{ $group->name }}</option>
-                            @endforeach
-                        </select>
-
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
-                    </form>
-
-
-
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -158,21 +171,22 @@
                 </div>
                 <div class="modal-body">
 
-                    <form  method="POST" id="permissionUpdate">
+                    <form method="POST" id="permissionUpdate">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="id" id="id">
-                        <input class="form-control mb-3" name="name" id="name" type="text" placeholder="Ex: view_products" aria-label="Group Example" required>
+                        <input class="form-control mb-3" name="name" id="name" type="text"
+                            placeholder="Ex: view_products" aria-label="Group Example" required>
                         <select class="form-select mb-3" name="label" id="label" required>
                             <option selected disabled>Select Label</option>
-                            @foreach($labels as $label)
+                            @foreach ($labels as $label)
                                 <option value="{{ $label }}">{{ $label }}</option>
                             @endforeach
                         </select>
                         <select class="form-select mb-3" name="group_id" id="group_id" required>
                             <option selected disabled>Select Group</option>
-                            @foreach($groups as $group)
-                                <option value="{{ $group->id }}" >{{ $group->name }}</option>
+                            @foreach ($groups as $group)
+                                <option value="{{ $group->id }}">{{ $group->name }}</option>
                             @endforeach
                         </select>
 
@@ -192,7 +206,6 @@
 @section('scripts')
 
     <script>
-
         var permissions = {!! json_encode($permissions) !!};
 
         function edit(id) {
@@ -216,7 +229,7 @@
 
             for (var i = 0; i < label.length; i++) {
                 if (label[i].value == permissions.find(permission => permission.id === id).label) {
-                  label[i].selected = true;
+                    label[i].selected = true;
                     break;
                 }
             }
@@ -250,16 +263,15 @@
                 }
             }
         }
-
     </script>
 
     <script src="{{ asset('assets/plugins/notifications/js/lobibox.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/notifications/js/notifications.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 
-    @if(Session::has('success') || Session::has('error'))
+    @if (Session::has('success') || Session::has('error'))
         <script>
-            window.onload = function () {
+            window.onload = function() {
                 pos1_default_noti();
             }
 
@@ -274,8 +286,6 @@
                     msg: "{{ Session::has('success') ? Session::get('success') : Session::get('error') }}"
                 });
             }
-
-
         </script>
     @endif
 

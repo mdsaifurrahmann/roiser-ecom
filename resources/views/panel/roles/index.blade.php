@@ -39,71 +39,77 @@
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
-    <div class="d-flex align-items-center">
-        <h5 class="mb-0">List of Roles</h5>
-        <form class="ms-auto position-relative">
-            <div class="position-absolute top-50 translate-middle-y search-icon px-3">
-                <ion-icon name="search-sharp"></ion-icon>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0">List of Roles</h5>
+                <form class="ms-auto position-relative">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                        <ion-icon name="search-sharp"></ion-icon>
+                    </div>
+                    <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
+                        onkeyup="searchPermissions()">
+                </form>
             </div>
-            <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
-                onkeyup="searchPermissions()">
-        </form>
-    </div>
-    <div class="table-responsive mt-4">
-        <table class="table align-middle">
-            <thead class="table-secondary">
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="roleTableBody">
+            <div class="table-responsive mt-4">
+                <table class="table align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roleTableBody">
 
-                @foreach ($roles as $key => $role)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $role->name }} </td>
+                        @foreach ($roles as $key => $role)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $role->name }} </td>
 
-                        <td>
-                            <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                {{-- @can('update_permission') --}}
-                                <a href="{{ route('role.edit', $role->name) }}" class="text-warning"
-                                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"
-                                    data-bs-original-title="Edit" aria-label="Edit">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </a>
-                                {{-- @endcan --}}
+                                <td>
+                                    <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                        {{-- @can('update_permission') --}}
+                                        <a href="{{ route('role.edit', $role->name) }}" class="text-warning"
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"
+                                            data-bs-original-title="Edit" aria-label="Edit">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </a>
+                                        {{-- @endcan --}}
 
-                                {{-- @can('delete_permission') --}}
-                                    <form method="POST" action="{{ route('role.delete') }}" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="hidden" name="id" id="permissionDelete"
-                                            value="{{ $role->id }}">
+                                        {{-- @can('delete_permission') --}}
+                                        <form method="POST" action="{{ route('role.delete') }}" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id" id="permissionDelete"
+                                                value="{{ $role->id }}">
 
-                                        <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
-                                                name="trash-outline"></ion-icon></button>
-                                    </form>
-                                {{-- @endcan --}}
+                                            <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
+                                                    name="trash-outline"></ion-icon></button>
+                                        </form>
+                                        {{-- @endcan --}}
 
-                                {{-- @cannot('update_permission' || 'delete_permission')
+                                        {{-- @cannot('update_permission' || 'delete_permission')
                                Actions unavailable
                             @endcannot --}}
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
 
-                @if ($roles->count() == 0)
-                    <tr>
-                        <td colspan="4" class="text-center">No Permissions found</td>
+                        @if ($roles->count() == 0)
+                            <tr>
+                                <td colspan="4" class="text-center">No Permissions found</td>
 
-                    </tr>
-                @endif
+                            </tr>
+                        @endif
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 
 @stop
@@ -138,7 +144,6 @@
         document.getElementById('addRole').addEventListener('click', function() {
             window.location.href = '{{ route('role.create') }}';
         });
-
     </script>
 
     <script src="{{ asset('assets/plugins/notifications/js/lobibox.min.js') }}"></script>
