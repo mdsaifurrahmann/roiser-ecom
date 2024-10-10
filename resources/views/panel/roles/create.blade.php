@@ -39,6 +39,22 @@
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-body">
 
@@ -133,7 +149,7 @@
     </script>
 
 
-    @if (Session::has('success') || Session::has('error'))
+    @if (Session::has('success'))
         <script>
             window.onload = function() {
                 pos1_default_noti();
@@ -142,12 +158,12 @@
             function pos1_default_noti() {
                 Lobibox.notify('default', {
                     rounded: true,
-                    icon: '{{ Session::has('success') ? 'bx bx-check-circle' : 'bx bx-error' }}',
+                    icon: 'bx bx-check-circle',
                     pauseDelayOnHover: true,
                     continueDelayOnInactiveTab: false,
                     position: 'center top',
                     size: 'mini',
-                    msg: "{{ Session::has('success') ? Session::get('success') : Session::get('error') }}"
+                    msg: "{{ Session::get('success') }}"
                 });
             }
         </script>

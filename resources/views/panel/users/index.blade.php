@@ -39,6 +39,22 @@
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-body">
 
@@ -58,6 +74,7 @@
                     <thead class="table-secondary">
                         <tr>
                             <th>#</th>
+                            <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -71,6 +88,8 @@
                         @foreach ($users as $key => $user)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
+                                <td><img src="{{Storage::url('users/'.$user->profile_image)}}" alt="{{$user->name}}" class="rounded-circle
+                                object-fit-cover" height="50" width="50"></td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone ? $user->phone : 'N/A' }}</td>
@@ -79,15 +98,15 @@
                                 <td>{{ $user->status == 1 ? 'Active' : 'Suspended' }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                        {{-- @can('update_permission') --}}
+                                         @can('user_update')
                                         <a href="{{ route('users.edit', $user->email) }}" class="text-warning" data-bs-toggle="tooltip"
                                             data-bs-placement="bottom" title="Edit" data-bs-original-title="Edit"
                                             aria-label="Edit">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
-                                        {{-- @endcan --}}
+                                         @endcan
 
-                                        {{-- @can('delete_permission') --}}
+                                         @can('user_delete')
                                         <form method="POST" action="{{ route('users.delete') }}" class="delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -96,11 +115,12 @@
                                             <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
                                                     name="trash-outline"></ion-icon></button>
                                         </form>
-                                        {{-- @endcan --}}
+                                         @endcan
 
-                                        {{-- @cannot('update_permission' || 'delete_permission')
-                               Actions unavailable
-                            @endcannot --}}
+                                             @if (auth()->user()->cannot('user_update') && auth()->user()->cannot
+                                             ('user_delete'))
+                                                 Actions unavailable
+                                             @endif
                                     </div>
                                 </td>
                             </tr>
@@ -203,9 +223,9 @@
             // Loop through all rows, and hide those that don't match the search query
             for (var i = 0; i < rows.length; i++) {
                 // get all columns
-                var name = rows[i].getElementsByTagName('td')[1]; // Get the second column (Name)
-                var email = rows[i].getElementsByTagName('td')[2]; // Get the second column (Name)
-                var phone = rows[i].getElementsByTagName('td')[3]; // Get the second column (Name)
+                var name = rows[i].getElementsByTagName('td')[2]; // Get the second column (Name)
+                var email = rows[i].getElementsByTagName('td')[3]; // Get the second column (Name)
+                var phone = rows[i].getElementsByTagName('td')[4]; // Get the second column (Name)
                 if (name || email) {
                     var txtValue = name.textContent || name.innerText;
                     var emValue = email.textContent || email.innerText;
@@ -225,7 +245,7 @@
     <script src="{{ asset('assets/plugins/notifications/js/notifications.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 
-    @if (Session::has('success') || Session::has('error'))
+    @if (Session::has('success'))
         <script>
             window.onload = function() {
                 pos1_default_noti();
@@ -234,12 +254,12 @@
             function pos1_default_noti() {
                 Lobibox.notify('default', {
                     rounded: true,
-                    icon: '{{ Session::has('success') ? 'bx bx-check-circle' : 'bx bx-error' }}',
+                    icon: 'bx bx-check-circle',
                     pauseDelayOnHover: true,
                     continueDelayOnInactiveTab: false,
                     position: 'center top',
                     size: 'mini',
-                    msg: "{{ Session::has('success') ? Session::get('success') : Session::get('error') }}"
+                    msg: "{{ Session::get('success') }}"
                 });
             }
         </script>

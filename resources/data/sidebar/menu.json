@@ -6,6 +6,18 @@
 		"slug": "dashboard"
 	},
 	{
+		"name": "Products",
+		"icon": "ice-cream",
+		"url": "",
+		"slug": "products"
+	},
+	{
+		"name": "Product Categories",
+		"icon": "grid-outline",
+		"url": "products/categories",
+		"slug": "products.categories.index"
+	},
+	{
 		"name": "Users & Customers",
 		"icon": "people-outline",
 		"url": "",

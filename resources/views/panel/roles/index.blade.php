@@ -39,6 +39,22 @@
         </x-panel.breadcrumb-action>
     </x-panel.breadcrumb>
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-body">
 
@@ -70,15 +86,15 @@
 
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                        {{-- @can('update_permission') --}}
+                                         @can('update_role')
                                         <a href="{{ route('role.edit', $role->name) }}" class="text-warning"
                                             data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"
                                             data-bs-original-title="Edit" aria-label="Edit">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
-                                        {{-- @endcan --}}
+                                         @endcan
 
-                                        {{-- @can('delete_permission') --}}
+                                         @can('delete_role')
                                         <form method="POST" action="{{ route('role.delete') }}" class="delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -88,11 +104,11 @@
                                             <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
                                                     name="trash-outline"></ion-icon></button>
                                         </form>
-                                        {{-- @endcan --}}
+                                         @endcan
 
-                                        {{-- @cannot('update_permission' || 'delete_permission')
-                               Actions unavailable
-                            @endcannot --}}
+                                             @if (auth()->user()->cannot('update_role') && auth()->user()->cannot('delete_role'))
+                                                 Actions unavailable
+                                             @endif
                                     </div>
                                 </td>
                             </tr>
@@ -150,7 +166,7 @@
     <script src="{{ asset('assets/plugins/notifications/js/notifications.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 
-    @if (Session::has('success') || Session::has('error'))
+    @if (Session::has('success'))
         <script>
             window.onload = function() {
                 pos1_default_noti();
@@ -159,12 +175,12 @@
             function pos1_default_noti() {
                 Lobibox.notify('default', {
                     rounded: true,
-                    icon: '{{ Session::has('success') ? 'bx bx-check-circle' : 'bx bx-error' }}',
+                    icon: 'bx bx-check-circle',
                     pauseDelayOnHover: true,
                     continueDelayOnInactiveTab: false,
                     position: 'center top',
                     size: 'mini',
-                    msg: "{{ Session::has('success') ? Session::get('success') : Session::get('error') }}"
+                    msg: "{{ Session::get('success') }}"
                 });
             }
         </script>

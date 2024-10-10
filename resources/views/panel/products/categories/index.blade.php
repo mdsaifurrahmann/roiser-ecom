@@ -1,6 +1,6 @@
 @extends('layouts.panel')
 
-@section('title', 'Groups')
+@section('title', 'Product Categories')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/notifications/css/lobibox.min.css') }}" />
@@ -34,77 +34,105 @@
 
 @section('content')
 
-    <x-panel.breadcrumb title="Groups" page="Groups">
+    <x-panel.breadcrumb title="Product Categories" page="Product Categories">
         {{-- @can('create_group') --}}
-        <x-panel.breadcrumb-action title="Add Group" icon="add-circle-outline"
-            attr='data-bs-toggle="modal" data-bs-target="#exampleModal"' />
+        <x-panel.breadcrumb-action title="Add Category" icon="add-circle-outline"
+                                   attr='data-bs-toggle="modal" data-bs-target="#addModal"' />
         {{-- @endcan --}}
     </x-panel.breadcrumb>
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+
 
     <div class="card">
         <div class="card-body">
 
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">List of Groups</h5>
+                <h5 class="mb-0">List of Categories</h5>
                 <form class="ms-auto position-relative">
                     <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                         <ion-icon name="search-sharp"></ion-icon>
                     </div>
                     <input class="form-control ps-5" type="text" placeholder="Search" id="searchInput"
-                        onkeyup="searchGroups()">
+                           onkeyup="searchGroups()">
                 </form>
             </div>
             <div class="table-responsive mt-4">
                 <table class="table align-middle">
                     <thead class="table-secondary">
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Discount</th>
+                        <th>Discount Type</th>
+                        <th>Visibility</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
                     </thead>
                     <tbody id="groupTableBody">
 
-                        @foreach ($groups as $key => $group)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $group->name }}
-                                </td>
-                                <td>
-                                    <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                        @can('update_group')
-                                            <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
-                                                data-bs-placement="bottom" title="" data-bs-original-title="Edit"
-                                                aria-label="Edit" data-bs-target="#editModal"
-                                                onclick="edit({{ $group->id }})">
-                                                <ion-icon name="create-outline"></ion-icon>
-                                            </a>
-                                        @endcan
-                                         @can('delete_group')
-                                        <form method="POST" action="{{ route('group.delete') }}" class="delete-form">
+                    @foreach ($categories as $key => $category)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td><img src="{{ Storage::url('products/categories/'. $category->image) }}" alt="{{$category->name}}"
+                                     class="rounded-circle object-fit-cover" height="50" width="50"></td>
+                            <td>{{ $category->name }}</td>
+                            <td>{{ $category->discount }}</td>
+                            <td>{{ ucfirst($category->discount_type) }}</td>
+                            <td>{{ $category->visibility == 1 ? 'Visible' : 'Hidden' }}</td>
+                            <td>{{ $category->status == 1 ? 'Active' : 'Inactive' }}</td>
+                            <td>
+                                <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                    @can('update_category')
+                                        <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
+                                           data-bs-placement="bottom" title="" data-bs-original-title="Edit"
+                                           aria-label="Edit" data-bs-target="#editModal"
+                                           onclick="edit({{ $category->id }})">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </a>
+                                    @endcan
+                                     @can('delete_category')
+                                        <form method="POST" action="{{ route('products.category.delete') }}" class="delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id" id="groupDelete"
-                                                value="{{ $group->id }}">
+                                                   value="{{ $category->id }}">
 
                                             <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
-                                                    name="trash-outline"></ion-icon></button>
+                                                        name="trash-outline"></ion-icon></button>
                                         </form>
-                                         @endcan
+                                     @endcan
 
-                                            @if (auth()->user()->cannot('update_group') && auth()->user()->cannot('delete_group'))
-                                                Actions unavailable
-                                            @endif
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
+                                        @if (auth()->user()->cannot('update_category') && auth()->user()->cannot('delete_category'))
+                                            Actions unavailable
+                                        @endif
 
-                       @if ($groups->count() == 0)
-                            <tr>
-                                <td colspan="3" class="text-center">No groups found</td>
-                            </tr>
-                      @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @if ($categories->count() == 0)
+                        <tr>
+                            <td colspan="3" class="text-center">No Categories found</td>
+                        </tr>
+                     @endif
 
                     </tbody>
                 </table>
@@ -114,19 +142,50 @@
 
 
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Group</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Product Category</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <form action="{{ route('group.store') }}" method="POST">
+                    <form action="{{ route('products.category.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input class="form-control mb-3" name="name" type="text" placeholder="Ex: Products Group"
-                            aria-label="Group Example" required>
+                        <label for="name" class="form-label">Category Name</label>
+                        <input class="form-control mb-3" id="name" name="name" type="text" placeholder="Ex: T-Shirt"
+                               aria-label="Product Category" required>
+
+                        <label for="discount" class="form-label">Discount</label>
+                        <input type="number" name="discount" id="discount" class="form-control mb-3" value="0" placeholder="10">
+
+                        <label for="discount_type" class="form-label">Discount Type</label>
+                        <select name="discount_type" id="discount_type" class="form-select mb-3">
+                            <option value="percentage">Percentage</option>
+                            <option value="fixed">Fixed</option>
+                        </select>
+
+                        <label for="image">Banner/Poster/Image</label>
+                        <input type="file" name="image" id="image" class="form-control mb-3">
+
+
+                        <label for="visibility" class="form-label">Visibility</label>
+                        <select name="visibility" id="visibility" class="form-select mb-3">
+
+                            <option value="1">Visible</option>
+                            <option value="0">Invisible</option>
+
+                        </select>
+
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-select mb-3">
+
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+
+                        </select>
+
 
                         <div class="mt-3">
                             <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
@@ -154,7 +213,7 @@
                         @method('PATCH')
                         <input type="hidden" name="id" id="id">
                         <input class="form-control mb-3" id="name" name="name" type="text"
-                            placeholder="Ex: Products Group" aria-label="Group Example" value="" required>
+                               placeholder="Ex: Products Group" aria-label="Group Example" value="" required>
 
                         <div class="mt-3">
                             <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
@@ -172,7 +231,7 @@
 @section('scripts')
 
     <script>
-        var groups = {!! json_encode($groups) !!};
+        {{--var groups = {!! json_encode($groups) !!};--}}
 
         function edit(id) {
             // set the name value to the input
@@ -197,7 +256,7 @@
 
             // Loop through all rows, and hide those that don't match the search query
             for (var i = 0; i < rows.length; i++) {
-                var td = rows[i].getElementsByTagName('td')[1]; // Get the second column (Name)
+                var td = rows[i].getElementsByTagName('td')[2]; // Get the second column (Name)
                 if (td) {
                     var txtValue = td.textContent || td.innerText;
                     if (txtValue.toLowerCase().indexOf(filter) > -1) {

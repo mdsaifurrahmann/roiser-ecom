@@ -3,6 +3,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 
 class Permission
@@ -15,6 +16,6 @@ class Permission
             return back();
         }
 
-        return true;  // Indicate that permission check passed
+        return null;  // Indicate that permission check passed
     }
 }

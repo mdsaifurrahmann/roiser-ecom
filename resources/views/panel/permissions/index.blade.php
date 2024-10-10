@@ -72,16 +72,16 @@
                                 <td>{{ $permission->group_name }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                        {{-- @can('update_permission') --}}
+                                         @can('update_permission')
                                         <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
                                             data-bs-placement="bottom" title="" data-bs-original-title="Edit"
                                             aria-label="Edit" data-bs-target="#editModal"
                                             onclick="edit({{ $permission->id }})">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
-                                        {{-- @endcan --}}
+                                         @endcan
 
-                                        {{-- @can('delete_permission') --}}
+                                         @can('delete_permission')
                                         <form method="POST" action="{{ route('permission.delete') }}" class="delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -91,11 +91,12 @@
                                             <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
                                                     name="trash-outline"></ion-icon></button>
                                         </form>
-                                        {{-- @endcan --}}
+                                         @endcan
 
-                                        {{-- @cannot('update_permission' || 'delete_permission')
-                               Actions unavailable
-                            @endcannot --}}
+                                             @if (auth()->user()->cannot('update_permission') && auth()->user()->cannot
+                                             ('delete_permission'))
+                                                 Actions unavailable
+                                             @endif
                                     </div>
                                 </td>
                             </tr>
@@ -216,19 +217,19 @@
             var gId = document.getElementById('id');
             var form = document.getElementById('permissionUpdate');
 
+
             gId.setAttribute('value', id);
-            name.setAttribute('value', permissions.find(permission => permission.id === id).name);
-            // label.setAttribute('value', permissions.find(permission => permission.id === id).label);
+            name.setAttribute('value', permissions.data.find(permission => permission.id === id).name);
 
             for (var i = 0; i < group.length; i++) {
-                if (group[i].value == permissions.find(permission => permission.id === id).group_id) {
+                if (group[i].value == permissions.data.find(permission => permission.id === id).group_id) {
                     group[i].selected = true;
                     break;
                 }
             }
 
             for (var i = 0; i < label.length; i++) {
-                if (label[i].value == permissions.find(permission => permission.id === id).label) {
+                if (label[i].value == permissions.data.find(permission => permission.id === id).label) {
                     label[i].selected = true;
                     break;
                 }
@@ -253,8 +254,9 @@
             // Loop through all rows, and hide those that don't match the search query
             for (var i = 0; i < rows.length; i++) {
                 var td = rows[i].getElementsByTagName('td')[1]; // Get the second column (Name)
-                if (td) {
-                    var txtValue = td.textContent || td.innerText;
+                var group = rows[i].getElementsByTagName('td')[2]; // Get the Third column (Group)
+                if (td || group) {
+                    var txtValue = td.textContent || td.innerText || group.textContent || group.innerText;
                     if (txtValue.toLowerCase().indexOf(filter) > -1) {
                         rows[i].style.display = '';
                     } else {
@@ -269,7 +271,7 @@
     <script src="{{ asset('assets/plugins/notifications/js/notifications.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 
-    @if (Session::has('success') || Session::has('error'))
+    @if (Session::has('success'))
         <script>
             window.onload = function() {
                 pos1_default_noti();
@@ -278,12 +280,12 @@
             function pos1_default_noti() {
                 Lobibox.notify('default', {
                     rounded: true,
-                    icon: '{{ Session::has('success') ? 'bx bx-check-circle' : 'bx bx-error' }}',
+                    icon: 'bx bx-check-circle',
                     pauseDelayOnHover: true,
                     continueDelayOnInactiveTab: false,
                     position: 'center top',
                     size: 'mini',
-                    msg: "{{ Session::has('success') ? Session::get('success') : Session::get('error') }}"
+                    msg: "{{ Session::get('success') }}"
                 });
             }
         </script>

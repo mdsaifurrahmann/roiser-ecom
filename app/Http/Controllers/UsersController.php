@@ -10,11 +10,18 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Mews\Purifier\Facades\Purifier;
+use App\Services\Permission;
 
 class UsersController extends Controller
 {
     public function index()
     {
+
+        // check permission
+         if ($response = Permission::check('user_view')) {
+             return $response;
+         }
+
         $users = User::with('roles')->paginate(16)->fragment(hash('crc32', 'users'));
 
         $roles = Role::all();
@@ -27,6 +34,11 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
+
+        // check permission
+        if ($response = Permission::check('user_create')) {
+            return $response;
+        }
 
         try {
 
@@ -88,6 +100,11 @@ class UsersController extends Controller
     public function update(Request $request)
     {
 
+        // check permission
+        if ($response = Permission::check('user_update')) {
+            return $response;
+        }
+
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
@@ -141,6 +158,12 @@ class UsersController extends Controller
 
     public function destroy(Request $request)
     {
+
+        // check permission
+        if ($response = Permission::check('user_delete')) {
+            return $response;
+        }
+
         $user = User::find($request->id);
         if ($user) {
             // delete files

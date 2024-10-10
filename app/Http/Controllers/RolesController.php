@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Mews\Purifier\Facades\Purifier;
 use App\Models\Groups;
 use App\Models\PermissionModel;
@@ -19,9 +21,9 @@ class RolesController extends Controller
     public function rolesIndex()
     {
 
-        // if ($response = Permission::check('view_roles')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('view_role')) {
+             return $response;
+         }
 
         $roles = Cache::flexible('roles', [432000, 604800], function () {
             return Role::all();
@@ -35,9 +37,9 @@ class RolesController extends Controller
     public function roleCreate()
     {
 
-        // if ($response = Permission::check('create_role')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('create_role')) {
+             return $response;
+         }
 
         $groups = Cache::flexible('groups', [432000, 604800], function () {
             return Groups::all();
@@ -57,9 +59,9 @@ class RolesController extends Controller
     public function roleStore(Request $request)
     {
 
-        // if ($response = Permission::check('create_role')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('create_role')) {
+             return $response;
+         }
 
         try {
             $request->validate([
@@ -89,9 +91,9 @@ class RolesController extends Controller
     public function roleEdit($name)
     {
 
-        // if ($response = Permission::check('update_role')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('update_role')) {
+             return $response;
+         }
 
         $groups = Groups::all();
 
@@ -114,9 +116,9 @@ class RolesController extends Controller
     public function roleUpdate(Request $request)
     {
 
-        // if ($response = Permission::check('update_role')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('update_role')) {
+             return $response;
+         }
 
         try {
 
@@ -154,9 +156,9 @@ class RolesController extends Controller
     public function roleDelete(Request $request)
     {
 
-        // if ($response = Permission::check('delete_role')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('delete_role')) {
+             return $response;
+         }
 
         $role = Role::where('id', $request->id)->first();
         $role->delete();
@@ -179,9 +181,9 @@ class RolesController extends Controller
     public function groupsIndex()
     {
 
-        // if ($response = Permission::check('view_groups')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('view_groups')) {
+             return $response;
+         }
 
         $groups = Cache::flexible('groups', [432000, 604800], function () {
             return Groups::all();
@@ -196,9 +198,9 @@ class RolesController extends Controller
     public function groupStore(Request $request)
     {
 
-        // if ($response = Permission::check('create_group')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('create_group')) {
+             return $response;
+         }
 
         try {
 
@@ -230,9 +232,9 @@ class RolesController extends Controller
 
     public function groupUpdate(Request $request)
     {
-        // if ($response = Permission::check('update_group')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('update_group')) {
+             return $response;
+         }
 
         try {
 
@@ -264,9 +266,9 @@ class RolesController extends Controller
 
     public function groupDelete(Request $request)
     {
-        // if ($response = Permission::check('delete_group')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('delete_group')) {
+             return $response;
+         }
 
         $group = Groups::find($request->id);
         $group->delete();
@@ -285,9 +287,16 @@ class RolesController extends Controller
 
     public function permissionsIndex()
     {
+
+        // check permission
+         if ($response = Permission::check('view_permission')) {
+             return $response;
+         }
+
+
         $permissions = PermissionModel::join('groups', 'groups.id', '=', 'permissions.group_id')
                 ->select('permissions.id', 'permissions.name', 'permissions.label', 'permissions.group_id', 'groups.name as group_name')
-                ->paginate(12)->fragment(hash('crc32', 'permissions'));
+                ->paginate(12);
 
         $groups = Groups::all();
 
@@ -304,9 +313,9 @@ class RolesController extends Controller
     public function permissionStore(Request $request)
     {
 
-        // if($response = Permission::check('create_permission')){
-        //     return $response;
-        // }
+         if($response = Permission::check('create_permission')){
+             return $response;
+         }
 
 
         try {
@@ -344,9 +353,9 @@ class RolesController extends Controller
 
     public function permissionUpdate(Request $request)
     {
-        // if ($response = Permission::check('update_permission')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('update_permission')) {
+             return $response;
+         }
 
 
         try {
@@ -389,9 +398,9 @@ class RolesController extends Controller
 
     public function permissionDelete(Request $request)
     {
-        // if ($response = Permission::check('delete_permission')) {
-        //     return $response;
-        // }
+         if ($response = Permission::check('delete_permission')) {
+             return $response;
+         }
 
         $permission = PermissionModel::find($request->id);
         $permission->delete();
