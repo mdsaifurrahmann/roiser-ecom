@@ -3,7 +3,7 @@
 @section('title', 'Product Categories')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('assets/plugins/notifications/css/lobibox.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/plugins/notifications/css/lobibox.min.css') }}"/>
     <style>
         html.dark-theme .table thead tr th {
             color: var(--bs-table-bg) !important;
@@ -37,7 +37,7 @@
     <x-panel.breadcrumb title="Product Categories" page="Product Categories">
         {{-- @can('create_group') --}}
         <x-panel.breadcrumb-action title="Add Category" icon="add-circle-outline"
-                                   attr='data-bs-toggle="modal" data-bs-target="#addModal"' />
+                                   attr='data-bs-toggle="modal" data-bs-target="#addModal"'/>
         {{-- @endcan --}}
     </x-panel.breadcrumb>
 
@@ -107,21 +107,23 @@
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
                                     @endcan
-                                     @can('delete_category')
+                                    @can('delete_category')
                                         <form method="POST" action="{{ route('products.category.delete') }}" class="delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="id" id="groupDelete"
                                                    value="{{ $category->id }}">
 
-                                            <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
-                                                        name="trash-outline"></ion-icon></button>
+                                            <button type="submit" class="text-danger bg-transparent border-0">
+                                                <ion-icon
+                                                        name="trash-outline"></ion-icon>
+                                            </button>
                                         </form>
-                                     @endcan
+                                    @endcan
 
-                                        @if (auth()->user()->cannot('update_category') && auth()->user()->cannot('delete_category'))
-                                            Actions unavailable
-                                        @endif
+                                    @if (auth()->user()->cannot('update_category') && auth()->user()->cannot('delete_category'))
+                                        Actions unavailable
+                                    @endif
 
                                 </div>
                             </td>
@@ -132,7 +134,7 @@
                         <tr>
                             <td colspan="3" class="text-center">No Categories found</td>
                         </tr>
-                     @endif
+                    @endif
 
                     </tbody>
                 </table>
@@ -275,7 +277,7 @@
 
     @if (Session::has('success'))
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 pos1_default_noti();
             }
 
