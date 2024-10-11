@@ -12,6 +12,24 @@
 		"slug": "products"
 	},
 	{
+		"name": "Product Attributes",
+		"icon": "layers-outline",
+		"url": "",
+		"slug": "products",
+		"submenu": [
+			{
+				"name": "Colors",
+				"url": "",
+				"slug": ""
+			},
+			{
+				"name": "Sizes",
+				"url": "",
+				"slug": ""
+			}
+		]
+	},
+	{
 		"name": "Product Categories",
 		"icon": "grid-outline",
 		"url": "",
