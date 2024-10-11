@@ -1,6 +1,6 @@
 @extends('layouts.panel')
 
-@section('title', 'Product Categories')
+@section('title', 'Product Sub Categories')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/notifications/css/lobibox.min.css') }}"/>
@@ -34,9 +34,9 @@
 
 @section('content')
 
-    <x-panel.breadcrumb title="Product Categories" page="Product Categories">
+    <x-panel.breadcrumb title="Product Sub Categories" page="Product Sub Categories">
         {{-- @can('create_group') --}}
-        <x-panel.breadcrumb-action title="Add Category" icon="add-circle-outline"
+        <x-panel.breadcrumb-action title="Add Sub Category" icon="add-circle-outline"
                                    attr='data-bs-toggle="modal" data-bs-target="#addModal"'/>
         {{-- @endcan --}}
     </x-panel.breadcrumb>
@@ -62,7 +62,7 @@
         <div class="card-body">
 
             <div class="d-flex align-items-center">
-                <h5 class="mb-0">List of Categories</h5>
+                <h5 class="mb-0">List of Sub Categories</h5>
                 <form class="ms-auto position-relative">
                     <div class="position-absolute top-50 translate-middle-y search-icon px-3">
                         <ion-icon name="search-sharp"></ion-icon>
@@ -78,6 +78,7 @@
                         <th>#</th>
                         <th>Image</th>
                         <th>Name</th>
+                        <th>Parent Category</th>
                         <th>Discount (Unit)</th>
                         <th>Visibility</th>
                         <th>Status</th>
@@ -90,17 +91,17 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td><img src="{{ $category->image ? Storage::url('products/categories/'. $category->image) : asset
-                            ('assets/images/error/404.png') }}"
-                                     alt="{{$category->name}}"
+                            ('assets/images/error/404.png')}}" alt="{{$category->name}}"
                                      class="rounded-circle object-fit-cover" height="50" width="50"></td>
                             <td>{{ $category->name }}</td>
-                            <td>{{ $category->discount }} {{ $category->discount_type == 'percentage' ? '%' : ($category->discount_type
-                            == 'fixed' ? 'BDT' : '') }}</td>
+                            <td>{{ $category->parentCategories->name }}</td>
+                            <td>{{ $category->discount }} {{ $category->discount_type == 'percentage' ? '%' : ($category->discount_type ==
+                             'fixed' ? 'BDT' : '') }}</td>
                             <td>{{ $category->visibility == 1 ? 'Visible' : 'Hidden' }}</td>
                             <td>{{ $category->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    @can('update_category')
+                                    @can('update_sub_category')
                                         <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
                                            data-bs-placement="bottom" title="" data-bs-original-title="Edit"
                                            aria-label="Edit" data-bs-target="#editModal"
@@ -108,7 +109,7 @@
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
                                     @endcan
-                                    @can('delete_category')
+                                    @can('delete_sub_category')
                                         <form method="POST" action="{{ route('products.category.delete') }}" class="delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -122,7 +123,7 @@
                                         </form>
                                     @endcan
 
-                                    @if (auth()->user()->cannot('update_category') && auth()->user()->cannot('delete_category'))
+                                    @if (auth()->user()->cannot('update_sub_category') && auth()->user()->cannot('delete_sub_category'))
                                         Actions unavailable
                                     @endif
 
@@ -133,7 +134,7 @@
 
                     @if ($categories->count() == 0)
                         <tr>
-                            <td colspan="8" class="text-center">No Categories found</td>
+                            <td colspan="9" class="text-center">No Categories found</td>
                         </tr>
                     @endif
 
@@ -154,11 +155,19 @@
                 </div>
                 <div class="modal-body">
 
-                    <form action="{{ route('products.category.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('products.sub.category.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <label for="add_name" class="form-label">Category Name</label>
                         <input class="form-control mb-3" id="add_name" name="name" type="text" placeholder="Ex: T-Shirt"
                                aria-label="Product Category" required>
+
+                        <label for="add_parent_id" class="form-label">Parent Category</label>
+                        <select name="parent_id" id="add_parent_id" class="form-select mb-3" required>
+                            <option value="" selected disabled>Select Parent Category</option>
+                            @foreach ($parentCategories as $parentCategory)
+                                <option value="{{ $parentCategory->id }}">{{ $parentCategory->name }}</option>
+                            @endforeach
+                        </select>
 
                         <label for="add_discount" class="form-label">Discount</label>
                         <input type="number" name="discount" id="add_discount" class="form-control mb-3" value="0" placeholder="10">
@@ -175,7 +184,7 @@
 
                         <label for="add_visibility" class="form-label">Visibility</label>
                         <select name="visibility" id="add_visibility" class="form-select mb-3">
-
+                            <option value="" disabled selected>Select Visibility</option>
                             <option value="1">Visible</option>
                             <option value="0">Invisible</option>
 
@@ -183,7 +192,7 @@
 
                         <label for="add_status">Status</label>
                         <select name="status" id="add_status" class="form-select mb-3">
-
+                            <option value="" disabled selected>Select Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
 
@@ -206,7 +215,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Sub Category</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -215,10 +224,19 @@
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="id" id="id">
+                        <input type="hidden" name="parent_id" id="p_id">
 
                         <label for="name" class="form-label">Category Name</label>
                         <input class="form-control mb-3" id="name" name="name" type="text" placeholder="Ex: T-Shirt"
                                aria-label="Product Category" required>
+
+                        <label for="parent_id" class="form-label">Parent Category</label>
+                        <select name="parent_id" id="parent_id" class="form-select mb-3" required>
+                            <option value="" selected disabled>Select Parent Category</option>
+                            @foreach ($parentCategories as $parentCategory)
+                                <option value="{{ $parentCategory->id }}">{{ $parentCategory->name }}</option>
+                            @endforeach
+                        </select>
 
                         <label for="discount" class="form-label">Discount</label>
                         <input type="number" name="discount" id="discount" class="form-control mb-3" value="0" placeholder="10">
@@ -235,20 +253,17 @@
 
                         <label for="visibility" class="form-label">Visibility</label>
                         <select name="visibility" id="visibility" class="form-select mb-3">
-                            <option value="" disabled selected>Select Visibility</option>
+                            <option value="">Select Visibility</option>
                             <option value="1">Visible</option>
                             <option value="0">Hidden</option>
 
-
                         </select>
 
-                        <label for="status">Status</label>
+                        <label for="status" class="form-label">Status</label>
                         <select name="status" id="status" class="form-select mb-3">
-
-                            <option value="" disabled selected>Select Status</option>
+                            <option value="">Select Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
-
 
                         </select>
 
@@ -278,6 +293,7 @@
             const gId = document.getElementById('id');
             const discount = document.getElementById('discount');
             const discountType = document.getElementById('discount_type').options;
+            const parentCat = document.getElementById('parent_id').options;
             const visibility = document.getElementById('visibility').options;
             const status = document.getElementById('status').options;
 
@@ -299,8 +315,15 @@
                 }
             }
 
-            for (i; i < visibility.length; i++) {
+            for (i; i < parentCat.length; i++) {
+                if (parseInt(parentCat[i].value) === selectedCategory.parent_id) {
+                    parentCat[i].selected = true;
+                    break;
+                }
+            }
 
+
+            for (i; i < visibility.length; i++) {
                 if (parseInt(visibility[i].value) === visibilityValue) {
                     visibility[i].selected = true;
                     break;
@@ -315,7 +338,7 @@
             }
 
 
-            form.setAttribute('action', "{{ route('products.category.update', ':id') }}".replace(':id', id));
+            form.setAttribute('action', "{{ route('products.sub.category.update', ':id') }}".replace(':id', id));
 
         }
 

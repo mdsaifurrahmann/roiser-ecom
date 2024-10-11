@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -38,7 +37,7 @@ class FileUpload
             return $file_name;
         }
 
-        return null;
+        return $model->$attribute;
     }
 
     public static function delete($model, $attribute, $path): null|true

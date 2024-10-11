@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientRoutes;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\ProductsCategoryController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\ProductsCategoryController;
+use Illuminate\Support\Facades\Route;
 
 
 Route::controller(ClientRoutes::class)->group(function () {
@@ -32,11 +32,15 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         // Categories
         Route::get('categories', [ProductsCategoryController::class, 'index'])->name('products.categories.index');
         Route::post('store', [ProductsCategoryController::class, 'store'])->name('products.category.store');
+        Route::patch('update', [ProductsCategoryController::class, 'update'])->name('products.category.update');
         Route::delete('delete', [ProductsCategoryController::class, 'destroy'])->name('products.category.delete');
 
+        // Sub Categories
+        Route::get('sub-categories', [ProductsCategoryController::class, 'subCategoriesIndex'])->name('products.sub.categories.index');
+        Route::post('sub-category/store', [ProductsCategoryController::class, 'subCategoryStore'])->name('products.sub.category.store');
+        Route::patch('sub-category/update', [ProductsCategoryController::class, 'updateSubCategory'])->name('products.sub.category.update');
+
     });
-
-
 
 
     // users & customers

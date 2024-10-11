@@ -14,8 +14,20 @@
 	{
 		"name": "Product Categories",
 		"icon": "grid-outline",
-		"url": "products/categories",
-		"slug": "products.categories.index"
+		"url": "",
+		"slug": "products.categories",
+		"submenu": [
+			{
+				"name": "Categories",
+				"url": "products/categories",
+				"slug": "products.categories.index"
+			},
+			{
+				"name": "Sub Categories",
+				"url": "products/sub-categories",
+				"slug": "products.sub.categories.index"
+			}
+		]
 	},
 	{
 		"name": "Users & Customers",
