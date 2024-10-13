@@ -194,7 +194,7 @@
             <input type="text" name="code" id="code" class="form-control mb-3" placeholder="Ex: #000000">
 
             <label for="image" class="form-label">Image (Resolution: 16x16px)</label>
-            <input type="file" name="image" class="form-control mb-3">
+            <input type="file" name="image" id="image" class="form-control mb-3">
 
             <input type="checkbox" class="form-check-input me-2" name="remove_image" id="remove_image">
             <label for="remove_image" class="form-label">Remove Image</label>
