@@ -18,14 +18,14 @@
 		"slug": "products",
 		"submenu": [
 			{
-				"name": "Colors",
-				"url": "",
-				"slug": ""
+				"name": "Manage Colors",
+				"url": "attributes/colors",
+				"slug": "attributes.colors.index"
 			},
 			{
-				"name": "Sizes",
-				"url": "",
-				"slug": ""
+				"name": "Manage Sizes",
+				"url": "attributes/sizes",
+				"slug": "attributes.size.index"
 			}
 		]
 	},

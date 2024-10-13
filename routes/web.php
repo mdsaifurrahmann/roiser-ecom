@@ -5,6 +5,8 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ProductsCategoryController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ProductColorController;
+use App\Http\Controllers\ProductSizeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,6 +42,20 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         Route::post('sub-category/store', [ProductsCategoryController::class, 'subCategoryStore'])->name('products.sub.category.store');
         Route::patch('sub-category/update', [ProductsCategoryController::class, 'updateSubCategory'])->name('products.sub.category.update');
 
+    });
+
+    Route::prefix('attributes')->group(function () {
+        // colors
+        Route::get('colors', [ProductColorController::class, 'index'])->name('attributes.colors.index');
+        Route::post('color/store', [ProductColorController::class, 'store'])->name('attributes.color.store');
+        Route::patch('color/update', [ProductColorController::class, 'update'])->name('attributes.color.update');
+        Route::delete('color/delete', [ProductColorController::class, 'destroy'])->name('attributes.color.delete');
+
+        // size
+        Route::get('sizes', [ProductSizeController::class, 'index'])->name('attributes.size.index');
+        Route::post('size/store', [ProductSizeController::class, 'store'])->name('attributes.size.store');
+        Route::patch('size/update', [ProductSizeController::class, 'update'])->name('attributes.size.update');
+        Route::delete('size/delete', [ProductSizeController::class, 'destroy'])->name('attributes.size.delete');
     });
 
 
