@@ -72,31 +72,30 @@
                                 <td>{{ $permission->group_name }}</td>
                                 <td>
                                     <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                         @can('update_permission')
-                                        <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
-                                            data-bs-placement="bottom" title="" data-bs-original-title="Edit"
-                                            aria-label="Edit" data-bs-target="#editModal"
-                                            onclick="edit({{ $permission->id }})">
-                                            <ion-icon name="create-outline"></ion-icon>
-                                        </a>
-                                         @endcan
+                                        @can('update_permission')
+                                            <a href="javascript:void(0)" class="text-warning" data-bs-toggle="modal"
+                                                data-bs-placement="bottom" title="" data-bs-original-title="Edit"
+                                                aria-label="Edit" data-bs-target="#editModal"
+                                                onclick="edit({{ $permission->id }})">
+                                                <ion-icon name="create-outline"></ion-icon>
+                                            </a>
+                                        @endcan
 
-                                         @can('delete_permission')
-                                        <form method="POST" action="{{ route('permission.delete') }}" class="delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="id" id="permissionDelete"
-                                                value="{{ $permission->id }}">
+                                        @can('delete_permission')
+                                            <form method="POST" action="{{ route('permission.delete') }}" class="delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" id="permissionDelete"
+                                                    value="{{ $permission->id }}">
 
-                                            <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
-                                                    name="trash-outline"></ion-icon></button>
-                                        </form>
-                                         @endcan
+                                                <button type="submit" class="text-danger bg-transparent border-0"><ion-icon
+                                                        name="trash-outline"></ion-icon></button>
+                                            </form>
+                                        @endcan
 
-                                             @if (auth()->user()->cannot('update_permission') && auth()->user()->cannot
-                                             ('delete_permission'))
-                                                 Actions unavailable
-                                             @endif
+                                        @if (auth()->user()->cannot('update_permission') && auth()->user()->cannot('delete_permission'))
+                                            Actions unavailable
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -254,9 +253,8 @@
             // Loop through all rows, and hide those that don't match the search query
             for (var i = 0; i < rows.length; i++) {
                 var td = rows[i].getElementsByTagName('td')[1]; // Get the second column (Name)
-                var group = rows[i].getElementsByTagName('td')[2]; // Get the Third column (Group)
                 if (td || group) {
-                    var txtValue = td.textContent || td.innerText || group.textContent || group.innerText;
+                    var txtValue = td.textContent || td.innerText;
                     if (txtValue.toLowerCase().indexOf(filter) > -1) {
                         rows[i].style.display = '';
                     } else {

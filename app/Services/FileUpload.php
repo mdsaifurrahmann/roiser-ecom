@@ -21,13 +21,31 @@ class FileUpload
         return null;
     }
 
+
+    public static function bulkUpload($array, $directory): null|array
+    {
+        if ($array) {
+            $fileNames = [];
+            foreach ($array as $value) {
+                $file_name = time() . Str::random(16) . '.' . Str::replace(' ', '-', $value->getClientOriginalExtension());
+
+                $fileNames[] = $file_name;
+
+                Storage::disk('public')->putFileAs($directory, $value, $file_name);
+            }
+            return $fileNames;
+        }
+
+        return null;
+    }
+
     public static function update($key, $model, $attribute, $path): null|string
     {
         $request = request();
         if ($request->hasFile($key)) {
 
-            if ($model->$attribute && Storage::disk('public')->exists( $path.'/' . $model->$attribute)) {
-                Storage::disk('public')->delete( $path.'/' . $model->$attribute);
+            if ($model->$attribute && Storage::disk('public')->exists($path . '/' . $model->$attribute)) {
+                Storage::disk('public')->delete($path . '/' . $model->$attribute);
             }
 
             $file = $request->file($key);
@@ -42,8 +60,8 @@ class FileUpload
 
     public static function delete($model, $attribute, $path): null|true
     {
-        if ($model->$attribute && Storage::disk('public')->exists( $path.'/' . $model->$attribute)) {
-            Storage::disk('public')->delete( $path.'/' . $model->$attribute);
+        if ($model->$attribute && Storage::disk('public')->exists($path . '/' . $model->$attribute)) {
+            Storage::disk('public')->delete($path . '/' . $model->$attribute);
 
             return true;
         }

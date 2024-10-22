@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ProductSize;
+use App\Models\Products\ProductSize;
 use App\Services\Permission;
 use Mews\Purifier\Facades\Purifier;
 

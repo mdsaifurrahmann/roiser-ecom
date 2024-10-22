@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Products;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductColor extends Model
+class ProductSize extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'code',
-        'image'
+        'size',
     ];
 
-    protected $table = 'product_colors';
+    protected $table = 'product_sizes';
+
+    
 }

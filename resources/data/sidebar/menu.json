@@ -9,7 +9,19 @@
 		"name": "Products",
 		"icon": "ice-cream",
 		"url": "",
-		"slug": "products"
+		"slug": "products",
+		"submenu": [
+			{
+				"name": "Add Product",
+				"url": "products/create",
+				"slug": "products.create"
+			},
+			{
+				"name": "Manage Product",
+				"url": "products/manage",
+				"slug": "products.index"
+			}
+		]
 	},
 	{
 		"name": "Product Attributes",
@@ -26,6 +38,11 @@
 				"name": "Manage Sizes",
 				"url": "attributes/sizes",
 				"slug": "attributes.size.index"
+			},
+			{
+				"name": "Manage Size Guides",
+				"url": "attributes/size-guides",
+				"slug": "attributes.size.guide.index"
 			}
 		]
 	},

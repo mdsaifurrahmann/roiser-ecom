@@ -16,7 +16,7 @@ class ProductsCategory extends Model
 
     protected $table = 'products_categories';
 
-    protected $fillable =[
+    protected $fillable = [
         'name',
         'slug',
         'image',
@@ -45,4 +45,8 @@ class ProductsCategory extends Model
         return $this->belongsTo(ProductsCategory::class, 'parent_id');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Products::class, 'category_id')->chaperone('products');
+    }
 }

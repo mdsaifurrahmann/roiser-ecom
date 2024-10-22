@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    @livewireStyles
     @include('layouts._partials.panel.styles')
 
     {{-- <link href="assets/css/semi-dark.css" rel="stylesheet" />
@@ -51,6 +52,8 @@
 
 
 
+
+    {{-- @livewireScripts --}}
     @include('layouts._partials.panel.scripts')
 
 

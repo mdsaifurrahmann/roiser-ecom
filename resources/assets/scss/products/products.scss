@@ -1,0 +1,46 @@
+.ql-editor.ql-blank::before,
+.ql-snow .ql-picker,
+.ql-stroke,
+.ql-snow .ql-stroke {
+    color: var(--bs-body-color);
+    stroke: var(--bs-body-color)
+}
+
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
+    border: 1px solid rgb(255 255 255 / 12%);
+}
+
+.filepond--item {
+    width: calc(50% - 20px);
+    /* Adjust width of each preview */
+    margin: 10px 10px;
+    /* Add spacing between previews */
+}
+
+/* Display items inline as flex */
+.filepond--list {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow wrapping to the next line */
+    justify-content: flex-start;
+    /* Align items to the start */
+}
+
+.filepond--drop-label,
+.filepond--drip {
+    background-color: #181818 !important;
+    background: #181818 !important;
+    color: #fcfcfc;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: var(--bs-border-radius);
+}
+
+@media (max-width: 768px) {
+    .filepond--item {
+        width: calc(100% - 20px);
+        /* Adjust width of each preview */
+        margin: 10px 10px;
+        /* Add spacing between previews */
+    }
+}

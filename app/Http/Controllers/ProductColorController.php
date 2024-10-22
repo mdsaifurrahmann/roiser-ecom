@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ProductColor;
+use App\Models\Products\ProductColor;
 use App\Services\Permission;
 use App\Services\FileUpload;
 use Mews\Purifier\Facades\Purifier;

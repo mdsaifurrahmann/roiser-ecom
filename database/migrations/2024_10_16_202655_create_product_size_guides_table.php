@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_colors', function (Blueprint $table) {
+        Schema::create('product_size_guides', function (Blueprint $table) {
             $table->unsignedBigInteger('id', true);
-            $table->string('name');
-            $table->string('code')->nullable();
-            $table->text('image')->nullable();
+            $table->string('name')->unique();
+            $table->string('image');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_colors');
+        Schema::dropIfExists('product_size_guides');
     }
 };

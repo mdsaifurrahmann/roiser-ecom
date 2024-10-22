@@ -7,6 +7,8 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProductColorController;
 use App\Http\Controllers\ProductSizeController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductSizeGuideController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,15 +35,24 @@ Route::prefix('panel')->middleware('auth')->group(function () {
 
         // Categories
         Route::get('categories', [ProductsCategoryController::class, 'index'])->name('products.categories.index');
-        Route::post('store', [ProductsCategoryController::class, 'store'])->name('products.category.store');
-        Route::patch('update', [ProductsCategoryController::class, 'update'])->name('products.category.update');
-        Route::delete('delete', [ProductsCategoryController::class, 'destroy'])->name('products.category.delete');
+        Route::post('category/store', [ProductsCategoryController::class, 'store'])->name('products.category.store');
+        Route::patch('category/update', [ProductsCategoryController::class, 'update'])->name('products.category.update');
+        Route::delete('category/delete', [ProductsCategoryController::class, 'destroy'])->name('products.category.delete');
 
         // Sub Categories
         Route::get('sub-categories', [ProductsCategoryController::class, 'subCategoriesIndex'])->name('products.sub.categories.index');
         Route::post('sub-category/store', [ProductsCategoryController::class, 'subCategoryStore'])->name('products.sub.category.store');
         Route::patch('sub-category/update', [ProductsCategoryController::class, 'updateSubCategory'])->name('products.sub.category.update');
 
+
+        // Products
+        Route::get('manage', [ProductsController::class, 'index'])->name('products.index');
+        Route::get('create', [ProductsController::class, 'create'])->name('products.create');
+        Route::post('store', [ProductsController::class, 'store'])->name('products.store');
+        Route::get('edit/{product_code}', [ProductsController::class, 'edit'])->name('products.edit');
+        Route::put('product/update', [ProductsController::class, 'update'])->name('products.update');
+        Route::delete('product/delete', [ProductsController::class, 'destroy'])->name('products.delete');
+        Route::delete('product/{productId}/variant/media', [ProductsController::class, 'deleteVariantMedia'])->name('products.variant.media.delete');
     });
 
     Route::prefix('attributes')->group(function () {
@@ -56,6 +67,12 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         Route::post('size/store', [ProductSizeController::class, 'store'])->name('attributes.size.store');
         Route::patch('size/update', [ProductSizeController::class, 'update'])->name('attributes.size.update');
         Route::delete('size/delete', [ProductSizeController::class, 'destroy'])->name('attributes.size.delete');
+
+        // size guides
+        Route::get('size-guides', [ProductSizeGuideController::class, 'index'])->name('attributes.size.guide.index');
+        Route::post('size-guide/store', [ProductSizeGuideController::class, 'store'])->name('attributes.size.guide.store');
+        Route::patch('size-guide/update', [ProductSizeGuideController::class, 'update'])->name('attributes.size.guide.update');
+        Route::delete('size-guide/delete', [ProductSizeGuideController::class, 'destroy'])->name('attributes.size.guide.delete');
     });
 
 
