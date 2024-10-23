@@ -153,7 +153,7 @@
                             <h4 class="mb-0 text-primary">0</h4>
                         </div>
                         <div class="ms-auto text-primary fs-2">
-                            <ion-icon name="return-up-back-outline"></ion-icon>
+                            <ion-icon name="close-circle-outline"></ion-icon>
                         </div>
                     </div>
                 </div>
