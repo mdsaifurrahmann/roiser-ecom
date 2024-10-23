@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientRoutes;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProductsCategoryController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
@@ -75,13 +76,30 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         Route::delete('size-guide/delete', [ProductSizeGuideController::class, 'destroy'])->name('attributes.size.guide.delete');
     });
 
-
     // users & customers
-    Route::get('users', [UsersController::class, 'index'])->name('users.index');
-    Route::post('users/store', [UsersController::class, 'store'])->name('users.store');
-    Route::delete('users/delete', [UsersController::class, 'destroy'])->name('users.delete');
-    Route::get('users/edit/{email}', [UsersController::class, 'edit'])->name('users.edit');
-    Route::patch('users/update', [UsersController::class, 'update'])->name('users.update');
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UsersController::class, 'index'])->name('users.index');
+        Route::post('store', [UsersController::class, 'store'])->name('users.store');
+        Route::delete('delete', [UsersController::class, 'destroy'])->name('users.delete');
+        Route::get('edit/{email}', [UsersController::class, 'edit'])->name('users.edit');
+        Route::patch('update', [UsersController::class, 'update'])->name('users.update');
+    });
+
+    // Frontend Pages Content
+    Route::prefix('pages')->group(function () {
+
+        // Policies
+        Route::get('policies', [PolicyController::class, 'index'])->name('policies.index');
+        Route::patch('privacy', [PolicyController::class, 'privacy'])->name('policies.privacy');
+        Route::patch('refund', [PolicyController::class, 'refund'])->name('policies.refund');
+
+        // Terms
+        Route::get('tos', [PolicyController::class, 'tos'])->name('tos.index');
+        Route::patch('tos/update', [PolicyController::class, 'tosUpdate'])->name('tos.update');
+    });
+
+
+
 
     // group post
     Route::get('groups', [RolesController::class, 'groupsIndex'])->name('groups.index');

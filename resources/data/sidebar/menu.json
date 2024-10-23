@@ -104,5 +104,23 @@
 				"slug": "roles.index"
 			}
 		]
+	},
+	{
+		"name": "Pages",
+		"icon": "albums-outline",
+		"url": "",
+		"slug": "pages",
+		"submenu": [
+			{
+				"name": "Policies",
+				"url": "pages/policies",
+				"slug": "policies.index"
+			},
+			{
+				"name": "Terms of Service",
+				"url": "pages/tos",
+				"slug": "tos.index"
+			}
+		]
 	}
 ]
