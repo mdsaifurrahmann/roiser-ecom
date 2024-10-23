@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@sentry/browser": "^8.26.0",
+        "@yaireo/tagify": "^4.31.3",
         "sass": "^1.78.0"
     }
 }

@@ -122,5 +122,11 @@
 				"slug": "tos.index"
 			}
 		]
+	},
+	{
+		"name": "Website Information",
+		"icon": "information-circle-outline",
+		"url": "info-settings",
+		"slug": "info.index"
 	}
 ]

@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pages;
 use Mews\Purifier\Facades\Purifier;
+use App\Services\Permission;
 
 class PolicyController extends Controller
 {
     public function index()
     {
+
+        if ($response = Permission::check('view_privacy_refund_policy')) {
+            return $response;
+        }
+
         $privacy = Pages::where('page', 'privacy_policy')->where('section', 'privacy_policy')->first();
         $refund = Pages::where('page', 'refund_policy')->where('section', 'refund_policy')->first();
-
-        // dd($privacy);
 
         return view('panel.pages.policy', [
             'privacy' => $privacy ? $privacy->data : null,
@@ -23,9 +27,12 @@ class PolicyController extends Controller
 
     public function tos()
     {
-        $tos = Pages::where('page', 'tos')->where('section', 'tos')->first();
 
-        // dd($privacy);
+        if ($response = Permission::check('view_terms')) {
+            return $response;
+        }
+
+        $tos = Pages::where('page', 'tos')->where('section', 'tos')->first();
 
         return view('panel.pages.tos', [
             'tos' => $tos ? $tos->data : null
@@ -34,6 +41,11 @@ class PolicyController extends Controller
 
     public function privacy(Request $request)
     {
+
+        if ($response = Permission::check('update_privacy_policy')) {
+            return $response;
+        }
+
         try {
 
             $request->validate([
@@ -70,6 +82,11 @@ class PolicyController extends Controller
 
     public function refund(Request $request)
     {
+
+        if ($response = Permission::check('update_refund')) {
+            return $response;
+        }
+
         try {
 
             $request->validate([
@@ -89,7 +106,7 @@ class PolicyController extends Controller
                 ]);
             } else {
                 Pages::where('page', 'refund_policy')->where('section', 'refund_policy')->update([
-                    'dada' => Purifier::clean($request->refund_policy),
+                    'data' => Purifier::clean($request->refund_policy),
                     'updated_by' => auth()->user()->id,
                     'updated_at' => now(),
                     'created_at' => now()
@@ -106,6 +123,11 @@ class PolicyController extends Controller
 
     public function tosUpdate(Request $request)
     {
+
+        if ($response = Permission::check('update_terms')) {
+            return $response;
+        }
+
         try {
 
             $request->validate([
@@ -114,7 +136,6 @@ class PolicyController extends Controller
 
 
             if (!Pages::where('page', 'tos')->where('section', 'tos')->exists()) {
-
                 Pages::create([
                     'page' => 'tos',
                     'section' => 'tos',
@@ -125,7 +146,7 @@ class PolicyController extends Controller
                 ]);
             } else {
                 Pages::where('page', 'getTos')->where('section', 'getTos')->update([
-                    'dada' => Purifier::clean($request->tos),
+                    'data' => Purifier::clean($request->tos),
                     'updated_by' => auth()->user()->id,
                     'updated_at' => now(),
                     'created_at' => now()

@@ -52,27 +52,29 @@
     <div class="card">
         <div class="card-body">
 
-            <ul class="nav nav-tabs nav-primary" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#privacy_policy" role="tab"
-                        aria-selected="true">
-                        <div class="d-flex align-items-center">
-                            <div class="tab-icon">
+            <div class="card-header" style="border-bottom: unset">
+                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#privacy_policy" role="tab"
+                            aria-selected="true">
+                            <div class="d-flex align-items-center">
+                                <div class="tab-icon">
+                                </div>
+                                <div class="tab-title">Privacy Policy</div>
                             </div>
-                            <div class="tab-title">Privacy Policy</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" data-bs-toggle="tab" href="#refund_policy" role="tab" aria-selected="false">
-                        <div class="d-flex align-items-center">
-                            <div class="tab-icon">
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" data-bs-toggle="tab" href="#refund_policy" role="tab" aria-selected="false">
+                            <div class="d-flex align-items-center">
+                                <div class="tab-icon">
+                                </div>
+                                <div class="tab-title">Refund & Refund Policy</div>
                             </div>
-                            <div class="tab-title">Refund & Refund Policy</div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
 
             <div class="tab-content py-3">
