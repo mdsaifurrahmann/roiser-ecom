@@ -32,6 +32,12 @@ class ProductsCategoryController extends Controller
         $category->discount_type = Purifier::clean($request->discount_type);
         $category->visibility = Purifier::clean($request->visibility);
         $category->status = Purifier::clean($request->status);
+        $category->featured = $request->featured ? true : false;
+        $category->menu_placement = $request->menu_placement ? true : false;
+        $category->top_rated = $request->top_rated ? true : false;
+        $category->best_seller = $request->best_seller ? true : false;
+        $category->new_arrival = $request->new_arrival ? true : false;
+        $category->popular = $request->popular ? true : false;
         $category->parent_id = $request->parent_id ? Purifier::clean($request->parent_id) : null;
 
         // check image
@@ -148,6 +154,13 @@ class ProductsCategoryController extends Controller
             $category->visibility = Purifier::clean($request->visibility);
             $category->status = Purifier::clean($request->status);
 
+            $category->featured = $request->featured ? true : false;
+            $category->menu_placement = $request->menu_placement ? true : false;
+            $category->top_rated = $request->top_rated ? true : false;
+            $category->best_seller = $request->best_seller ? true : false;
+            $category->new_arrival = $request->new_arrival ? true : false;
+            $category->popular = $request->popular ? true : false;
+
             $category->parent_id = null;
 
             // check image
@@ -190,6 +203,13 @@ class ProductsCategoryController extends Controller
             $category->visibility = Purifier::clean($request->visibility);
             $category->status = Purifier::clean($request->status);
 
+            $category->featured = $request->featured ? true : false;
+            $category->menu_placement = $request->menu_placement ? true : false;
+            $category->top_rated = $request->top_rated ? true : false;
+            $category->best_seller = $request->best_seller ? true : false;
+            $category->new_arrival = $request->new_arrival ? true : false;
+            $category->popular = $request->popular ? true : false;
+
             $category->parent_id = $request->parent_id ? Purifier::clean($request->parent_id) : null;
 
             // check image
@@ -224,25 +244,4 @@ class ProductsCategoryController extends Controller
         return redirect()->back()->with('success', 'Category deleted successfully');
 
     }
-
-
-//    /**
-//     * Remove the specified resource from storage.
-//     */
-//    public function subCategoryDelete(ProductsCategory $productsCategory, Request $request)
-//    {
-//        // check permission
-//        if ($response = Permission::check('delete_category')) {
-//            return $response;
-//        }
-//
-//        $category = $productsCategory->where('id', $request->id)->first();
-//
-//        FileUpload::delete($category, 'image', 'products/categories');
-//
-//        $category->delete();
-//
-//        return redirect()->back()->with('success', 'Category deleted successfully');
-//
-//    }
 }

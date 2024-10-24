@@ -81,6 +81,14 @@
                         <th>Parent Category</th>
                         <th>Discount (Unit)</th>
                         <th>Visibility</th>
+
+                        <th class="text-center">Top Rated</th>
+                        <th class="text-center">New Arrival</th>
+                        <th class="text-center">Best Seller</th>
+                        <th class="text-center">Popular</th>
+                        <th class="text-center">Featured</th>
+                        <th class="text-center">As Manu</th>
+
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -98,6 +106,48 @@
                             <td>{{ $category->discount }} {{ $category->discount_type == 'percentage' ? '%' : ($category->discount_type ==
                              'fixed' ? 'BDT' : '') }}</td>
                             <td>{{ $category->visibility == 1 ? 'Visible' : 'Hidden' }}</td>
+                            <td class="text-center">
+                                @if($category->top_rated == 1)
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                @else
+                                    <ion-icon name="close-outline"></ion-icon>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($category->new_arrival == 1)
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                @else
+                                    <ion-icon name="close-outline"></ion-icon>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($category->best_seller == 1)
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                @else
+                                    <ion-icon name="close-outline"></ion-icon>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($category->popular == 1)
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                @else
+                                    <ion-icon name="close-outline"></ion-icon>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($category->featured == 1)
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                @else
+                                    <ion-icon name="close-outline"></ion-icon>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($category->menu_placement == 1)
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                @else
+                                    <ion-icon name="close-outline"></ion-icon>
+                                @endif
+                            </td>
                             <td>{{ $category->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
@@ -187,7 +237,6 @@
                             <option value="" disabled selected>Select Visibility</option>
                             <option value="1">Visible</option>
                             <option value="0">Invisible</option>
-
                         </select>
 
                         <label for="add_status">Status</label>
@@ -195,8 +244,35 @@
                             <option value="" disabled selected>Select Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
-
                         </select>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="featured" id="add_featured" value="1">
+                                <label for="add_featured" class="form-label">Featured</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="top_rated" id="add_top_rated" value="1">
+                                <label for="add_top_rated" class="form-label">Top Rated</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="new_arrival" id="add_new_arrival" value="1">
+                                <label for="add_new_arrival" class="form-label">New Arrival</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="best_seller" id="add_best_seller" value="1">
+                                <label for="add_best_seller" class="form-label">Best Seller</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="popular" id="add_popular" value="1">
+                                <label for="add_popular" class="form-label">Popular</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="menu_placement" id="add_menu_placement"
+                                       value="1">
+                                <label for="add_menu_placement" class="form-label">Show in Menu</label>
+                            </div>
+                        </div>
 
 
                         <div class="mt-3">
@@ -256,7 +332,6 @@
                             <option value="">Select Visibility</option>
                             <option value="1">Visible</option>
                             <option value="0">Hidden</option>
-
                         </select>
 
                         <label for="status" class="form-label">Status</label>
@@ -264,8 +339,34 @@
                             <option value="">Select Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
-
                         </select>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="featured" id="featured" value="1">
+                                <label for="featured" class="form-label">Featured</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="top_rated" id="top_rated" value="1">
+                                <label for="top_rated" class="form-label">Top Rated</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="new_arrival" id="new_arrival" value="1">
+                                <label for="new_arrival" class="form-label">New Arrival</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="best_seller" id="best_seller" value="1">
+                                <label for="best_seller" class="form-label">Best Seller</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="popular" id="popular" value="1">
+                                <label for="popular" class="form-label">Popular</label>
+                            </div>
+                            <div class="me-2">
+                                <input type="checkbox" class="form-check-input me-1" name="menu_placement" id="menu_placement" value="1">
+                                <label for="menu_placement" class="form-label">Show in Menu</label>
+                            </div>
+                        </div>
 
                         <div class="mt-3">
                             <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
@@ -285,7 +386,7 @@
     <script>
         const categories = {!! json_encode($categories) !!};
 
-        let i = 0;
+        // let i = 0;
 
         function edit(id) {
             // set the name value to the input
@@ -296,6 +397,13 @@
             const parentCat = document.getElementById('parent_id').options;
             const visibility = document.getElementById('visibility').options;
             const status = document.getElementById('status').options;
+
+            const featured = document.getElementById('featured');
+            const topRated = document.getElementById('top_rated');
+            const newArrival = document.getElementById('new_arrival');
+            const bestSeller = document.getElementById('best_seller');
+            const popular = document.getElementById('popular');
+            const menuPlacement = document.getElementById('menu_placement');
 
             const form = document.getElementById('groupUpdate');
 
@@ -308,14 +416,21 @@
             name.setAttribute('value', selectedCategory.name);
             discount.setAttribute('value', selectedCategory.discount);
 
-            for (i; i < discountType.length; i++) {
+            selectedCategory.featured === true ? featured.setAttribute('checked', 'checked') : featured.removeAttribute('checked');
+            selectedCategory.top_rated === true ? topRated.setAttribute('checked', 'checked') : topRated.removeAttribute('checked');
+            selectedCategory.new_arrival === true ? newArrival.setAttribute('checked', 'checked') : newArrival.removeAttribute('checked');
+            selectedCategory.best_seller === true ? bestSeller.setAttribute('checked', 'checked') : bestSeller.removeAttribute('checked');
+            selectedCategory.popular === true ? popular.setAttribute('checked', 'checked') : popular.removeAttribute('checked');
+            selectedCategory.menu_placement === '1' ? menuPlacement.setAttribute('checked', 'checked') : menuPlacement.removeAttribute('checked');
+
+            for (let i = 0; i < discountType.length; i++) {
                 if (discountType[i].value === selectedCategory.discount_type) {
                     discountType[i].selected = true;
                     break;
                 }
             }
 
-            for (i; i < parentCat.length; i++) {
+            for (let i = 0; i < parentCat.length; i++) {
                 if (parseInt(parentCat[i].value) === selectedCategory.parent_id) {
                     parentCat[i].selected = true;
                     break;
@@ -323,14 +438,14 @@
             }
 
 
-            for (i; i < visibility.length; i++) {
+            for (let i = 0; i < visibility.length; i++) {
                 if (parseInt(visibility[i].value) === visibilityValue) {
                     visibility[i].selected = true;
                     break;
                 }
             }
 
-            for (i; i < status.length; i++) {
+            for (let i = 0; i < status.length; i++) {
                 if (parseInt(status[i].value) === statusValue) {
                     status[i].selected = true;
                     break;

@@ -111,11 +111,16 @@
 		]
 	},
 	{
-		"name": "Pages",
+		"name": "Pages & Sections",
 		"icon": "albums-outline",
 		"url": "",
 		"slug": "pages",
 		"submenu": [
+			{
+				"name": "Sliders",
+				"url": "pages/front/sliders",
+				"slug": "front.sliders.index"
+			},
 			{
 				"name": "Policies",
 				"url": "pages/policies",

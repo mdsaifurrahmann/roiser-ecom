@@ -29,6 +29,12 @@ class ProductCategoryRequest extends FormRequest
             'discount' => 'nullable|numeric',
             'discount_type' => 'nullable|in:fixed,percentage',
             'visibility' => 'required|in:0,1',
+            'featured' => 'nullable|in:0,1',
+            'popular' => 'nullable|in:0,1',
+            'new_arrival' => 'nullable|in:0,1',
+            'best_seller' => 'nullable|in:0,1',
+            'top_rated' => 'nullable|in:0,1',
+            'menu_placement' => 'nullable|in:0,1',
             'parent_id' => 'nullable|exists:products_categories,id'
         ];
     }

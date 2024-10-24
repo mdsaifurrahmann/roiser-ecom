@@ -24,7 +24,13 @@ class ProductsCategory extends Model
         'parent_id',
         'visibility',
         'discount',
-        'discount_type'
+        'discount_type',
+        'menu_placement',
+        'featured',
+        'popular',
+        'new_arrival',
+        'best_seller',
+        'top_rated',
     ];
 
     protected $casts = [
@@ -32,7 +38,13 @@ class ProductsCategory extends Model
         'visibility' => 'boolean',
         'discount' => 'float',
         'parent_id' => 'integer',
-        'discount_type' => 'string'
+        'discount_type' => 'string',
+        'featured' => 'boolean',
+        'popular' => 'boolean',
+        'new_arrival' => 'boolean',
+        'best_seller' => 'boolean',
+        'top_rated' => 'boolean',
+        'menu_placement' => 'string',
     ];
 
     public function subCategories()
