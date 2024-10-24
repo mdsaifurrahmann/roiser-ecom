@@ -3,13 +3,13 @@
 use App\Http\Controllers\ClientRoutes;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\ProductColorController;
 use App\Http\Controllers\ProductsCategoryController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductSizeController;
+use App\Http\Controllers\ProductSizeGuideController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\ProductColorController;
-use App\Http\Controllers\ProductSizeController;
-use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\ProductSizeGuideController;
 use App\Http\Controllers\WebsiteInformationController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +55,12 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         Route::put('product/update', [ProductsController::class, 'update'])->name('products.update');
         Route::delete('product/delete', [ProductsController::class, 'destroy'])->name('products.delete');
         Route::delete('product/{productId}/variant/media', [ProductsController::class, 'deleteVariantMedia'])->name('products.variant.media.delete');
+
+
+        // Stock Management
+        Route::get('manage/stock', [ProductsController::class, 'stockIndex'])->name('products.stock.index');
+        Route::get('manage/stock/{product_code}', [ProductsController::class, 'stockEdit'])->name('products.stock.edit');
+        Route::patch('manage/stock/update', [ProductsController::class, 'updateStock'])->name('products.stock.update');
     });
 
     Route::prefix('attributes')->group(function () {

@@ -20,6 +20,11 @@
 				"name": "Manage Product",
 				"url": "products/manage",
 				"slug": "products.index"
+			},
+			{
+				"name": "Manage Stock",
+				"url": "products/manage/stock",
+				"slug": "products.stock.index"
 			}
 		]
 	},

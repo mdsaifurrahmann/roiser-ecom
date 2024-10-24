@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\DB;
-use App\Models\Products\ProductColor;
-use App\Models\Products\ProductSize;
-use App\Models\Products\ProductSizeGuide;
 use App\Http\Requests\ProductsRequest;
 use App\Http\Requests\ProductVariantsRequest;
+use App\Models\Products\ProductColor;
 use App\Models\Products\Products;
+use App\Models\Products\ProductSize;
+use App\Models\Products\ProductSizeGuide;
 use App\Models\Products\ProductVariants;
-use App\Services\Permission;
 use App\Services\FileUpload;
+use App\Services\Permission;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
@@ -385,6 +384,95 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
+        }
+    }
+
+
+    // stock management
+    public function stockIndex()
+    {
+
+        // check permission
+        if ($response = Permission::check('view_stock')) {
+            return $response;
+        }
+
+        $products = Products::select('id', 'product_code', 'name')->with('variants')->get();
+
+        return view('panel.products.stock.index', [
+            'products' => $products
+        ]);
+    }
+
+    public function stockEdit(Request $request, $product_code)
+    {
+        // check permission
+        if ($response = Permission::check('update_stock')) {
+            return $response;
+        }
+
+        $product = Products::where('product_code', $product_code)->select('id', 'product_code', 'name')->with([
+            'variants:id,product_id,stock,price,sale_price,color_id,size_id',
+            'variants.color:id,name',
+            'variants.size:id,size',
+        ])->get();
+
+//        dd(json_decode($product));
+
+        return view('panel.products.stock.edit', [
+            'product' => $product
+        ]);
+    }
+
+    public function updateStock(Request $request)
+    {
+
+
+        try {
+
+            DB::beginTransaction();
+
+            // Validate the input data
+            $request->validate([
+                'variants.*.id' => 'required|exists:product_variants,id',
+                'variants.*.stock' => 'nullable|integer|min:0',
+                'variants.*.price' => 'nullable|numeric|min:0',
+                'variants.*.sale_price' => 'nullable|numeric|min:0',
+            ]);
+
+
+            // Get all variants from the form
+            $variantsData = $request->input('variants');
+
+
+            foreach ($variantsData as $variant) {
+                // Retrieve the variant ID from the array
+                $variantId = $variant['id'];
+
+
+                // Find the corresponding variant
+                $productVariant = ProductVariants::findOrFail($variantId);
+
+                // Update the stock, price, and sale price
+                $productVariant->stock = $variant['stock'];
+                $productVariant->price = $variant['price'];
+                $productVariant->sale_price = $variant['sale_price'];
+
+                // Save the updated variant
+                $productVariant->save();
+            }
+
+            // Commit the transaction if all updates succeed
+            DB::commit();
+
+            // Return a success message or redirect to another page
+            return redirect()->route('products.stock.index')->with('success', 'Product Stocks updated successfully.');
+        } catch (\Exception $e) {
+            // Rollback the transaction if any error occurs
+            DB::rollBack();
+
+            // Handle the error (you can log it and show a friendly message)
+            return redirect()->back()->with('error', 'There was an error updating the product Stocks.');
         }
     }
 }
