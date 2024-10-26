@@ -1,9 +1,11 @@
 @extends('layouts.client')
 
+@section('title', 'Home')
+
 @section('body')
 
     @include('client.sections.hero-v2')
-    @include('client.sections.category')
+    @include('client.sections.category', [$categorySlider])
     @include('client.sections.product-slider')
 
     @include('client.sections.discount')

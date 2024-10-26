@@ -59,6 +59,6 @@ class ProductsCategory extends Model
 
     public function products()
     {
-        return $this->hasMany(Products::class, 'category_id')->chaperone('products');
+        return $this->hasMany(Products::class, 'category_id');
     }
 }

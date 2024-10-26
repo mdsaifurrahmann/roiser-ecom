@@ -1,6 +1,6 @@
 @extends('layouts.client')
 
-@section('title', 'Shop')
+@section('title', $category->name )
 
 @section('body')
 
@@ -9,7 +9,7 @@
         {{--        <div class="shape"><img src="{{Storage::url('products/categories/'. $category->image)}}" alt="shape"></div>--}}
         <div class="container">
             <div class="page-header-content">
-                <h1 class="title">Shop</h1>
+                <h1 class="title">{{$category->name}}</h1>
                 <h4 class="sub-title">
                         <span class="home">
                             <a href="{{route('home')}}">
@@ -18,7 +18,7 @@
                         </span>
                     <span class="icon"><i class="fa-solid fa-angle-right"></i></span>
                     <span class="inner">
-                            <span>Shop</span>
+                            <span>{{$category->name}}</span>
                         </span>
                 </h4>
             </div>
@@ -29,48 +29,11 @@
     <section class="shop-grid pt-50 pb-100">
         <div class="container">
             <div class="row">
-                <div class="col-lg-9 col-md-12">
+                <div class="col-lg-12 col-md-12">
                     <div class="shop-grid-left">
                         {{--                        <div class="top-grid-content">--}}
                         {{--                            <div class="shop-tab-nav">--}}
-                        {{--                                <nav>--}}
-                        {{--                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">--}}
-                        {{--                                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"--}}
-                        {{--                                            data-bs-target="#nav-home" type="button" role="tab"--}}
-                        {{--                                            aria-controls="nav-home" aria-selected="true">--}}
-                        {{--                                            <svg width="20" height="17" viewBox="0 0 20 17"--}}
-                        {{--                                                xmlns="http://www.w3.org/2000/svg">--}}
-                        {{--                                                <rect x="15" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect x="15" y="7" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect x="15" y="14" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect x="7.71875" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect x="7.71875" y="7" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect x="7.71875" y="14" width="5" height="3"--}}
-                        {{--                                                    fill="currentColor" />--}}
-                        {{--                                                <rect width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect y="7" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect y="14" width="5" height="3" fill="currentColor" />--}}
-                        {{--                                            </svg>--}}
 
-                        {{--                                        </button>--}}
-                        {{--                                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"--}}
-                        {{--                                            data-bs-target="#nav-profile" type="button" role="tab"--}}
-                        {{--                                            aria-controls="nav-profile" aria-selected="false">--}}
-                        {{--                                            <svg width="20" height="17" viewBox="0 0 20 17"--}}
-                        {{--                                                xmlns="http://www.w3.org/2000/svg">--}}
-                        {{--                                                <rect x="5.71875" width="14.2857" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect x="5.71875" y="7" width="14.2857" height="3"--}}
-                        {{--                                                    fill="currentColor" />--}}
-                        {{--                                                <rect x="5.71875" y="14" width="14.2857" height="3"--}}
-                        {{--                                                    fill="currentColor" />--}}
-                        {{--                                                <rect width="3.80952" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect y="7" width="3.80952" height="3" fill="currentColor" />--}}
-                        {{--                                                <rect y="14" width="3.80952" height="3" fill="currentColor" />--}}
-                        {{--                                            </svg>--}}
-                        {{--                                        </button>--}}
-                        {{--                                    </div>--}}
-                        {{--                                </nav>--}}
-                        {{--                                <span>Showing 1–12 of 88 results</span>--}}
                         {{--                            </div>--}}
                         {{--                            <div class="nice-select shop-select country" tabindex="0">--}}
                         {{--                                <span class="current">Default Shorting</span>--}}
@@ -86,22 +49,22 @@
                         {{--                        </div>--}}
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                aria-labelledby="nav-home-tab">
+                                 aria-labelledby="nav-home-tab">
                                 <div class="row gy-4">
 
                                     @foreach($products as $key => $product)
 
-                                        <div class="col-xl-4 col-lg-6 col-md-6">
+                                        <div class="col-xl-3 col-lg-4 col-md-6">
                                             <x-shop-item product_name="{{$product->name}}"
                                                          image="{{Storage::url('products/media/'. $product->thumbnail)}}"
                                                          category="{{$product->category->name}}"
                                                          offer="${{$product->variants[0]->sale_price}}"
-                                                         price="${{$product->variants[0]->price}}" details="{{route('product.details',
-                                                         $product->slug)}}" label="{{$product->variants[0]->sale_price ? 'Sale' : ''}}"/>
+                                                         price="${{$product->variants[0]->price}}"
+                                                         details="{{route('product.details', $product->slug)}}"
+                                                         label="{{$product->variants[0]->sale_price ? 'Sale' : ''}}"
+                                                         reviews=""/>
                                         </div>
-
                                     @endforeach
-
 
                                 </div>
                             </div>

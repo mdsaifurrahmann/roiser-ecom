@@ -107,7 +107,7 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->status == 1 ? 'Published' : 'Draft' }}</td>
                                 <td>{{ $product->category->name }}</td>
-                                <td>{{ $product->subCategory->name }}</td>
+                                <td>{{ $product->subCategory->name ?? 'N/A' }}</td>
                                 <td>{{ strtoupper($product->user->name) }} </td>
 
 

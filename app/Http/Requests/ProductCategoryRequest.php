@@ -23,7 +23,7 @@ class ProductCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'slug' => 'string',
+            'slug' => 'string|unique:products_categories,slug',
             'status' => 'required|in:0,1',
             'image' => 'nullable|image|max:1024',
             'discount' => 'nullable|numeric',

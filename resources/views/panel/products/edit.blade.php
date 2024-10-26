@@ -41,7 +41,7 @@
 
     <form action="{{ route('products.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
+        @method('PATCH')
 
         <input type="hidden" name="id" id="id" value="{{ $product->id }}">
 

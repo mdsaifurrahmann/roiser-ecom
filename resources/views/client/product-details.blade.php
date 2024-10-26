@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', $product->name ? $product->name : 'Product Details')
+
 @section('body')
 
     <section class="shop-section single pt-100 pb-100">
@@ -9,21 +11,23 @@
                     <div class="product-slider-wrap">
                         <div class="swiper product-gallary-thumb">
                             <div class="swiper-wrapper">
+
                                 <div class="swiper-slide">
                                     <div class="thumb-item">
-                                        <img src="assets/img/shop/shop-thumb-1.png" alt="shop">
+                                        <img src="{{ Storage::url('products/media/'.$product->thumbnail) }}" alt="shop">
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
-                                    <div class="thumb-item">
-                                        <img src="assets/img/shop/shop-thumb-2.png" alt="shop">
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="thumb-item">
-                                        <img src="assets/img/shop/shop-thumb-3.png" alt="shop">
-                                    </div>
-                                </div>
+
+                                @if($product->variants[0]->media)
+                                    @foreach($product->variants[0]->media as $key => $image)
+                                        <div class="swiper-slide">
+                                            <div class="thumb-item">
+                                                <img src="{{ Storage::url('products/media/'.$image) }}" alt="{{ $product->name }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+
                             </div>
                         </div>
                         <div class="swiper product-gallary">
@@ -31,19 +35,21 @@
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
                                     <div class="gallary-item">
-                                        <img src="assets/img/shop/shop-slider-1.jpg" alt="shop">
+                                        <img src="{{ Storage::url('products/media/'.$product->thumbnail) }}" alt="shop">
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
-                                    <div class="gallary-item">
-                                        <img src="assets/img/shop/shop-slider-2.jpg" alt="shop">
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="gallary-item">
-                                        <img src="assets/img/shop/shop-slider-3.jpg" alt="shop">
-                                    </div>
-                                </div>
+
+
+                                @if($product->variants[0]->media)
+                                    @foreach($product->variants[0]->media as $key => $image)
+                                        <div class="swiper-slide">
+                                            <div class="gallary-item">
+                                                <img src="{{ Storage::url('products/media/'.$image) }}" alt="{{ $product->name }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+
                             </div>
                             <div class="swiper-nav-next"><i class="las la-arrow-right"></i></div>
                             <div class="swiper-nav-prev"><i class="las la-arrow-left"></i></div>
@@ -54,8 +60,8 @@
                     <div class="product-details">
                         <div class="product-info">
                             <div class="product-inner">
-                                <span class="category">Modern Dress</span>
-                                <h3 class="title">Poncho Sweater International</h3>
+                                <span class="category">{{$product->category->name}}</span>
+                                <h3 class="title">{{$product->name}}</h3>
                                 <div class="rating-wrap">
                                     <ul class="rating">
                                         <li><i class="fa-sharp fa-solid fa-star"></i></li>
@@ -66,10 +72,13 @@
                                     </ul>
                                     <span>(1 customer review)</span>
                                 </div>
-                                <h4 class="price">$260.00 <span>$360.00</span></h4>
+                                <h4 class="price">${{$product->variants[0]->sale_price}} <span>${{$product->variants[0]->price}}</span></h4>
                                 <div class="product-desc-wrap">
-                                    <p class="desc">Eget taciti odio cum habitant egestas conubia turpis phasellus, ante parturient <br> donec duis primis nam faucibus augue malesuada venenatis</p>
-                                    <span class="view-text"><i class="fa-sharp fa-regular fa-eye"></i>28 people are viewing this right now</span>
+                                    <p class="desc">Eget taciti odio cum habitant egestas conubia turpis phasellus, ante parturient <br>
+                                        donec duis primis nam faucibus augue malesuada venenatis</p>
+                                    <span class="view-text">
+                                        <i class="fa-sharp fa-regular fa-eye"></i>28 people are viewing this right now
+                                    </span>
                                 </div>
                                 <div class="item-left-line">
                                     <span>Only 15 items left in stock!</span>
@@ -110,62 +119,68 @@
                 </li>
                 <li role="presentation">
                     <button id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
-                            aria-controls="profile" aria-selected="false">Additional information</button>
+                            aria-controls="profile" aria-selected="false">Size Guide
+                    </button>
                 </li>
                 <li role="presentation">
                     <button id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab"
-                            aria-controls="contact" aria-selected="false">Reviews (3)</button>
+                            aria-controls="contact" aria-selected="false">Reviews (3)
+                    </button>
                 </li>
             </ul>
             <div class="tab-content" id="product-tab-content">
                 <div class="tab-pane fade show active description" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="desc-wrap">
                         <div class="left-content">
-                            <p class="mb-30">Credibly negotiate emerging materials whereas clicks-and-mortar intellectual capital. Compellingly whiteboard client-centric sourcescross-platform schemas. Distinctively develop future-proof outsourcing without multimedia based portals. Progressively coordinate generation architectures for collaborative solutions. Professionally restore backward-compatible quality vectors before customer directed metrics. Holisticly restore technically sound internal or "organic" sources before client-centered human capital underwhelm holistic mindshare for prospective innovation.</p>
-                            <p class="mb-0">Seamlessly target fully tested infrastructures whereas just in time process improvements. Dynamically exploit team driven functionalities vis a vis global total linkage redibly synthesize just in time technology rather than open-source strategic theme areas.</p>
+                            <p class="mb-30">
+                                {!! $product->description !!}
+                            </p>
                         </div>
-                        <div class="right-content">
-                            <img src="assets/img/shop/shop-details-img.jpg" alt="">
-                        </div>
+                        {{--                        <div class="right-content">--}}
+                        {{--                            <img src="assets/img/shop/shop-details-img.jpg" alt="">--}}
+                        {{--                        </div>--}}
                     </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <table class="table product-table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Size</th>
-                            <th scope="col">Bust</th>
-                            <th scope="col">Waist</th>
-                            <th scope="col">Hip</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>S</td>
-                            <td>34 -36</td>
-                            <td>28-30</td>
-                            <td>38-40</td>
-                        </tr>
-                        <tr>
-                            <td>M</td>
-                            <td>36 -38</td>
-                            <td>30-32.5</td>
-                            <td>40-43</td>
-                        </tr>
-                        <tr>
-                            <td>L</td>
-                            <td>38-40</td>
-                            <td>32-34.5</td>
-                            <td>42-45.5</td>
-                        </tr>
-                        <tr>
-                            <td>XL</td>
-                            <td>40-42</td>
-                            <td>35-37</td>
-                            <td>46-38</td>
-                        </tr>
-                        </tbody>
-                    </table>
+
+                    <img src="{{ Storage::url('products/size-guides/'.$product->sizeGuide->image) }}" alt="">
+
+                    {{--                    <table class="table product-table">--}}
+                    {{--                        <thead>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <th scope="col">Size</th>--}}
+                    {{--                            <th scope="col">Bust</th>--}}
+                    {{--                            <th scope="col">Waist</th>--}}
+                    {{--                            <th scope="col">Hip</th>--}}
+                    {{--                        </tr>--}}
+                    {{--                        </thead>--}}
+                    {{--                        <tbody>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td>S</td>--}}
+                    {{--                            <td>34 -36</td>--}}
+                    {{--                            <td>28-30</td>--}}
+                    {{--                            <td>38-40</td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td>M</td>--}}
+                    {{--                            <td>36 -38</td>--}}
+                    {{--                            <td>30-32.5</td>--}}
+                    {{--                            <td>40-43</td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td>L</td>--}}
+                    {{--                            <td>38-40</td>--}}
+                    {{--                            <td>32-34.5</td>--}}
+                    {{--                            <td>42-45.5</td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        <tr>--}}
+                    {{--                            <td>XL</td>--}}
+                    {{--                            <td>40-42</td>--}}
+                    {{--                            <td>35-37</td>--}}
+                    {{--                            <td>46-38</td>--}}
+                    {{--                        </tr>--}}
+                    {{--                        </tbody>--}}
+                    {{--                    </table>--}}
                 </div>
                 <div class="tab-pane fade review" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                     <div class="row product-review gy-lg-0 gy-4">

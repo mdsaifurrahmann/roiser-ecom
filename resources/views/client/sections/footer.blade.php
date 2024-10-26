@@ -48,7 +48,7 @@
                         <div class="icon"><i class="fa-sharp fa-solid fa-phone-rotary"></i></div>
                         <div class="content">
                             <span>Have Question? Call Us 24/7</span>
-                            <a href="tel:+25836922569">+258 3692 2569</a>
+                            <a href="tel:{{$infoArray['contact_mobile']}}">{{$infoArray['contact_mobile']}}</a>
                         </div>
                     </div>
                     <ul class="schedule-list">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <p>Copyright & Design 2024 <span>©Roiser</span>. All Right Reserved</p>
+                    <p>Copyright 2024 <span>©{{$infoArray['website_name']}}</span>. All Right Reserved</p>
                 </div>
             </div>
         </div>

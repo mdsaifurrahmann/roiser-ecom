@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', 'About')
+
 @section('body')
 
     <section class="about-section pt-100 pb-100">

@@ -12,7 +12,7 @@
                         </ul>
                     </div>
                     <div class="top-bar-right">
-                        <span>Need Help? Call Us: <a href="tel:+258326821485">+258 3268 21485</a></span>
+                        <span>Need Help? Call Us: <a href="tel:{{$infoArray['contact_mobile']}}">{{$infoArray['contact_mobile']}}</a></span>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     <div class="header-middle-left">
                         <div class="header-logo d-lg-block">
                             <a href="{{route('home')}}">
-                                <img src="{{asset("assets/img/logo/logo-2.png")}}" alt="Logo">
+                                <img src="{{ Storage::url('site__info/'.$infoArray['logo']) }}" alt="Logo">
                             </a>
                         </div>
                         <div class="form-wrap">
@@ -70,7 +70,7 @@
                 <div class="primary-header-inner">
                     <div class="header-logo mobile-logo">
                         <a href="{{route('home')}}">
-                            <img src="{{asset("assets/img/logo/logo-2.png")}}" alt="Logo">
+                            <img src="{{ Storage::url('site__info/'.$infoArray['logo']) }}" alt="Logo">
                         </a>
                     </div>
                     <div class="header-menu-wrap">
@@ -82,12 +82,23 @@
                                 <li class="">
                                     <a href="{{route('shop')}}">Shop</a>
                                 </li>
-                                <li>
-                                    <a href="javascript:void(0)">Women</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">men</a>
-                                </li>
+
+                                {{--@dump($categories)--}}
+
+                                @foreach($categories as $key => $category)
+                                    @if($category->parent_id == null)
+                                        <li class="">
+                                            <a href="{{route('page', $category->slug)}}">{{$category->name}}</a>
+                                            @if(count($category->subCategories) > 0)
+                                                <ul>
+                                                    @foreach($category->subCategories as $child)
+                                                        <li><a href="{{route('page', $child->slug)}}">{{$child->name}}</a></li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endif
+                                @endforeach
 
                                 <li class="">
                                     <a href="javascript:void(0)">Blog</a>
@@ -123,9 +134,11 @@
             </div>
             <div class="side-menu-wrap"></div>
             <ul class="side-menu-list">
-                <li><i class="fa-light fa-location-dot"></i>Address : <span>Amsterdam, 109-74</span></li>
-                <li><i class="fa-light fa-phone"></i>Phone : <a href="tel:+01569896654">+01 569 896 654</a></li>
-                <li><i class="fa-light fa-envelope"></i>Email : <a href="mailto:info@example.com">info@example.com</a></li>
+                <li><i class="fa-light fa-location-dot"></i>Address : <span>{{$infoArray['contact_address']}}</span></li>
+                <li><i class="fa-light fa-phone"></i>Phone : <a
+                            href="tel:{{$infoArray['contact_mobile']}}">{{$infoArray['contact_mobile']}}</a></li>
+                <li><i class="fa-light fa-envelope"></i>Email : <a
+                            href="mailto:{{$infoArray['contact_email']}}">{{$infoArray['contact_email']}}</a></li>
             </ul>
         </div>
     </div>

@@ -1,5 +1,6 @@
 @extends('layouts.client')
 
+@section('title', 'Cart')
 
 @section('body')
 

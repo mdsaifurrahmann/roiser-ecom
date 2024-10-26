@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Products\Products;
+use App\Models\Products\ProductsCategory;
 
 class ClientRoutes extends Controller
 {
 
     public function home()
     {
-        return view('client.home');
+        $categorySlider = ProductsCategory::where('visibility', 1)->where('status', 1)->where('featured', 1)->take(8)->get();
+
+        return view('client.home', [
+            'categorySlider' => $categorySlider
+        ]);
     }
 
     public function wishlist()
@@ -39,7 +44,11 @@ class ClientRoutes extends Controller
 
     public function shop()
     {
-        return view('client.shop');
+        $products = Products::where('status', 1)->with('category', 'variants')->paginate(24);
+
+        return view('client.shop', [
+            'products' => $products
+        ]);
     }
 
     public function contact()
@@ -67,13 +76,32 @@ class ClientRoutes extends Controller
         return view('client.checkout');
     }
 
-    public function productDetails()
+    public function productDetails($slug)
     {
-        return view('client.product-details');
+        $product = Products::where('slug', $slug)->with(['category', 'variants.color', 'variants.size', 'sizeGuide'])->first();
+
+        return view('client.product-details', [
+            'product' => $product
+        ]);
     }
 
     public function blogDetails()
     {
         return view('client.blog-details');
+    }
+
+
+    public function page($slug)
+    {
+
+        $category = ProductsCategory::where('slug', $slug)->select('id', 'name', 'image')->first();
+
+        $products = Products::where('category_id', $category->id)->orWhere('sub_category_id', $category->id)->where('status', 1)->with('category', 'variants')->paginate(20);
+
+        return view('client.page', [
+            'products' => $products,
+            'category' => $category
+        ]);
+
     }
 }

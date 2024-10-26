@@ -14,12 +14,18 @@
         <div class="category-carousel swiper">
             <div class="swiper-wrapper">
 
-                <x-category-item category_name="Women Wear" category_img="assets/img/images/cate-1.png" category_route="shop" />
-                <x-category-item category_name="Shoes Collection" category_img="assets/img/images/cate-2.png" category_route="shop" />
-                <x-category-item category_name="Watch" category_img="assets/img/images/cate-3.png" category_route="shop" />
-                <x-category-item category_name="Accessories" category_img="assets/img/images/cate-4.png" category_route="shop" />
-                <x-category-item category_name="Sunglasses" category_img="assets/img/images/cate-5.png" category_route="shop" />
-                <x-category-item category_name="Women Wear" category_img="assets/img/images/cate-6.png" category_route="shop" />
+                @foreach ($categorySlider as $category)
+                    <x-category-item category_name="{{ $category->name }}"
+                                     category_img="{{Storage::url('products/categories/'.$category->image)}}"
+                                     category_route="{{route('page', $category->slug)}}"/>
+                @endforeach
+
+
+                {{--                <x-category-item category_name="Shoes Collection" category_img="assets/img/images/cate-2.png" category_route="shop" />--}}
+                {{--                <x-category-item category_name="Watch" category_img="assets/img/images/cate-3.png" category_route="shop" />--}}
+                {{--                <x-category-item category_name="Accessories" category_img="assets/img/images/cate-4.png" category_route="shop" />--}}
+                {{--                <x-category-item category_name="Sunglasses" category_img="assets/img/images/cate-5.png" category_route="shop" />--}}
+                {{--                <x-category-item category_name="Women Wear" category_img="assets/img/images/cate-6.png" category_route="shop" />--}}
 
             </div>
         </div>

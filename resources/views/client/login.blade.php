@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', 'Login')
+
 @section('body')
 
     <section class="login-area pt-100 pb-100">

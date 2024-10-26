@@ -23,6 +23,7 @@ class ProductsRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'slug' => 'nullable|string|unique:products,slug',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:products_categories,id',
             'sub_category_id' => 'nullable|exists:products_categories,id',

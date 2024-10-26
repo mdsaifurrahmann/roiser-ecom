@@ -2,12 +2,9 @@
 
 namespace App\Models\Products;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Products\ProductsCategory;
-use App\Models\User;
-use App\Models\Products\ProductVariants;
-use App\Models\Products\ProductSizeGuide;
 
 class Products extends Model
 {
@@ -16,6 +13,7 @@ class Products extends Model
     protected $fillable = [
         'product_code',
         'name',
+        'slug',
         'description',
         'category_id',
         'sub_category_id',

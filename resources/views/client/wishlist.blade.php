@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', 'Wishlist')
+
 @section('body')
 
     <section class="cart-section pt-60 pb-90">

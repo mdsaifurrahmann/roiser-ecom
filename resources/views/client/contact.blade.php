@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', 'Contact Us')
+
 @section('body')
 
     <section class="contact-section pt-60 pb-60">

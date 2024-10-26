@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', 'Checkout')
+
 @section('body')
 
     <section class="checkout-section pt-60 pb-60">

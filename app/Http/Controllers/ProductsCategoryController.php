@@ -28,7 +28,13 @@ class ProductsCategoryController extends Controller
         // set attributes
         $category->name = Purifier::clean($request->name);
         $category->discount = Purifier::clean($request->discount);
-        $category->slug = Str::slug($request->name, '-');
+
+        if (ProductsCategory::where('slug', Str::slug($request->name, '-'))->exists()) {
+            $category->slug = Str::slug($request->name, '-') . '-' . Str::random(5);
+        } else {
+            $category->slug = Str::slug($request->name, '-');
+        }
+
         $category->discount_type = Purifier::clean($request->discount_type);
         $category->visibility = Purifier::clean($request->visibility);
         $category->status = Purifier::clean($request->status);
@@ -149,7 +155,6 @@ class ProductsCategoryController extends Controller
             // set attributes
             $category->name = Purifier::clean($request->name);
             $category->discount = Purifier::clean($request->discount);
-            $category->slug = Str::slug($request->name, '-');
             $category->discount_type = Purifier::clean($request->discount_type);
             $category->visibility = Purifier::clean($request->visibility);
             $category->status = Purifier::clean($request->status);
@@ -198,7 +203,6 @@ class ProductsCategoryController extends Controller
             // set attributes
             $category->name = Purifier::clean($request->name);
             $category->discount = Purifier::clean($request->discount);
-            $category->slug = Str::slug($request->name, '-');
             $category->discount_type = Purifier::clean($request->discount_type);
             $category->visibility = Purifier::clean($request->visibility);
             $category->status = Purifier::clean($request->status);

@@ -1,5 +1,7 @@
 @extends('layouts.client')
 
+@section('title', 'Register')
+
 @section('body')
 
 

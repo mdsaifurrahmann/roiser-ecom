@@ -14,6 +14,7 @@ use App\Services\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
@@ -109,6 +110,7 @@ class ProductsController extends Controller
 
             $product->product_code = self::generateProductCode();
             $product->name = $productsRequest->name;
+            $product->slug = Str::slug($productsRequest->name, '-') . '-' . Str::random(5);
             $product->description = $productsRequest->description;
             $product->category_id = $productsRequest->category_id;
             $product->sub_category_id = $productsRequest->sub_category_id;
@@ -134,7 +136,7 @@ class ProductsController extends Controller
                 $variant->sku = $variantData['sku'];
 
                 if (array_key_exists('media', $variantData)) {
-                    $variant->media = json_encode(FileUpload::bulkUpload($variantData['media'], 'products/media'));
+                    $variant->media = FileUpload::bulkUpload($variantData['media'], 'products/media');
                 }
 
                 $variant->save();
